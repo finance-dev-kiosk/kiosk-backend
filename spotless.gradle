@@ -1,0 +1,17 @@
+spotless {
+    version = "6.25.0"
+
+    java {
+        target("**/*.java")
+
+        importOrder()
+
+        removeUnusedImports()
+
+        googleJavaFormat().aosp()
+
+        trimTrailingWhitespace()
+
+        endWithNewline()
+    }
+}
