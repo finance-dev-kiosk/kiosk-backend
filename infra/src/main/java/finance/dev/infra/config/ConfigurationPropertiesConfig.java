@@ -5,6 +5,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 
 @TypeInfo(name = "ConfigurationPropertiesConfig", description = "프로퍼티 설정 클래스")
-@EnableConfigurationProperties
+@EnableConfigurationProperties({finance.dev.infra.properties.JwtProperties.class})
 @Configuration
 public class ConfigurationPropertiesConfig {}
