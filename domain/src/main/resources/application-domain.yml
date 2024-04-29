@@ -29,6 +29,29 @@ spring:
       mode: ${SQL_INIT_MODE}
       schema-locations: ${SQL_INIT_SCHEMA_LOCATIONS}
       data-locations: ${SQL_INIT_DATA_LOCATIONS}
+  mail:
+    host: ${MAIL_HOST}
+    port: 465
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    default-encoding: UTF-8
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+            trust: ${MAIL_HOST}
+          starttls:
+            enable: true
+            required: true
+          timeout: 5000
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false
+            port: 465
+        debug: true
 
 ---
 spring:
