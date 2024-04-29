@@ -1,5 +1,6 @@
 package finance.dev.api.config;
 
+import finance.dev.common.annotation.MethodInfo;
 import finance.dev.common.annotation.TypeInfo;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
