@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: infra
+  profiles:
+    include:
+      - common
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
