@@ -5,6 +5,30 @@ spring:
     include:
       - infra
       - common
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO}
+    properties:
+      hibernate:
+        show_sql: ${JPA_SHOW_SQL}
+        format_sql: ${JPA_FORMAT_SQL}
+        default_batch_fetch_size: ${JPA_BATCH_FETCH_SIZE}
+        jdbc:
+          batch_size: ${JPA_JDBC_BATCH_SIZE}
+        order_inserts: ${JPA_ORDER_INSERTS}
+        order_updates: ${JPA_ORDER_UPDATES}
+        use_sql_comments: ${JPA_USE_SQL_COMMENTS}
+      defer-datasource-initialization: ${JPA_DETER_DATASOURCE_INITIALIZATION}
+  sql:
+    init:
+      mode: ${SQL_INIT_MODE}
+      schema-locations: ${SQL_INIT_SCHEMA_LOCATIONS}
+      data-locations: ${SQL_INIT_DATA_LOCATIONS}
 
 ---
 spring:
