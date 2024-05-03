@@ -7,3 +7,7 @@ dependencies {
     implementation project(':infra')
     implementation project(':common')
 }
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-parameters"
+}

@@ -1,7 +1,6 @@
 package finance.dev.domain.entity;
 
 import finance.dev.common.annotation.TypeInfo;
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,7 +18,8 @@ import org.springframework.data.redis.core.index.Indexed;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuthMailEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id private Long id; // 인증 메일 식별자
+    @Id
+    private Long id; // 인증 메일 식별자
 
     @Indexed private String email; // 이메일 주소
 
