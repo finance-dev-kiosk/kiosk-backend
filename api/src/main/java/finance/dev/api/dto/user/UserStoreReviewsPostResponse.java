@@ -1,7 +1,6 @@
 package finance.dev.api.dto.user;
 
 import java.util.ArrayList;
-
 import lombok.Builder;
 import lombok.Getter;
 
