@@ -7,6 +7,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
+import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -45,15 +46,14 @@ public class JwtHandler {
 
     @MethodInfo(name = "buildToken", description = "JWT Token을 빌드합니다.")
     private String buildAccessToken(String id, Date issuedAt, Date tokenExpiresIn, String type) {
-
-        final Key encodedKey = getSecretKey();
+        SecretKey encodedKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
         return Jwts.builder()
                 .setSubject(id)
                 .setIssuedAt(issuedAt)
                 .setExpiration(tokenExpiresIn)
                 .claim("type", type)
-                .signWith(encodedKey, SignatureAlgorithm.HS256)
+                .signWith(encodedKey)
                 .compact();
     }
 

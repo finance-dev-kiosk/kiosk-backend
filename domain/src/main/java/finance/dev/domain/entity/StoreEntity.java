@@ -2,7 +2,7 @@ package finance.dev.domain.entity;
 
 import finance.dev.common.annotation.TypeInfo;
 import jakarta.persistence.*;
-import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,19 +45,19 @@ public class StoreEntity {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_idx")
-    private ArrayList<ReviewEntity> reviews; // 가게 리뷰 목록
+    private List<ReviewEntity> reviews; // 가게 리뷰 목록
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_idx")
-    private ArrayList<CommentEntity> comments; // 가게 댓글 목록
+    private List<CommentEntity> comments; // 가게 댓글 목록
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_idx")
-    private ArrayList<ProductEntity> products; // 가게 상품 목록
+    private List<ProductEntity> products; // 가게 상품 목록
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_idx")
-    private ArrayList<PeriodEntity> periods; // 가게 운영 시간 목록
+    private List<PeriodEntity> periods; // 가게 운영 시간 목록
 
     @Builder
     public StoreEntity(
