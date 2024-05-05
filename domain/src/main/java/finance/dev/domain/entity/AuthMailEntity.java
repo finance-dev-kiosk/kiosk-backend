@@ -25,12 +25,15 @@ public class AuthMailEntity {
 
     @Indexed private String code; // 인증 코드
 
+    @Indexed private Boolean isVerified; // 인증 여부
+
     @TimeToLive private Long ttl; // 만료 시간
 
     @Builder
-    public AuthMailEntity(String email, String code, Long ttl) {
+    public AuthMailEntity(String email, String code, Boolean isVerified, Long ttl) {
         this.email = email;
         this.code = code;
+        this.isVerified = isVerified;
         this.ttl = ttl;
     }
 }

@@ -22,6 +22,10 @@ public class UserService {
         return userRepository.findByName(name) != null;
     }
 
+    public boolean isExistEmail(String email) {
+        return userRepository.findByEmail(email) != null;
+    }
+
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
