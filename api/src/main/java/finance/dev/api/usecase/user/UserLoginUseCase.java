@@ -51,7 +51,7 @@ public class UserLoginUseCase {
 
             // 쿠키 생성 및 헤더에 추가
             ResponseCookie cookie =
-                    ResponseCookie.from("Authorization", "Bearer " + refreshToken)
+                    ResponseCookie.from("Authorization", "Bearer" + refreshToken)
                             .httpOnly(true)
                             .path("/")
                             .maxAge(Duration.ofDays(30))
