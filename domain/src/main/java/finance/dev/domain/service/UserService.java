@@ -26,6 +26,10 @@ public class UserService {
         return userRepository.findByEmail(email) != null;
     }
 
+    public void register(String userId, String password, String name, String email) {
+        userRepository.save(
+                UserEntity.builder().id(userId).password(password).name(name).email(email).build());
+    }
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
