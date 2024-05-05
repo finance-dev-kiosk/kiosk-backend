@@ -14,6 +14,9 @@ public class UserService {
         return userRepository.findByIdAndPassword(userId, password) != null;
     }
 
+    public boolean isExistName(String name) {
+        return userRepository.findByName(name) != null;
+    }
 
 
     public UserService(UserRepository userRepository) {

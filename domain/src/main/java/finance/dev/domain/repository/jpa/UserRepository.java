@@ -9,5 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
+
+    UserEntity findByName(String name);
     UserEntity findByIdAndPassword(String userId, String password);
 }
