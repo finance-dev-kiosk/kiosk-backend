@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
 
+    public boolean login(String userId, String password) {
+        return userRepository.findByIdAndPassword(userId, password) != null;
+    }
+
 
 
     public UserService(UserRepository userRepository) {

@@ -7,7 +7,6 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
-import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +43,7 @@ public class JwtHandler {
             return parseToken(token).getBody().getSubject();
         } catch (ExpiredJwtException e) {
             throw new IllegalStateException(e.getMessage());
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new IllegalStateException("토큰이 올바르지 않습니다.");
         }
     }
