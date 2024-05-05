@@ -2,7 +2,7 @@ package finance.dev.domain.entity;
 
 import finance.dev.common.annotation.TypeInfo;
 import jakarta.persistence.*;
-import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,10 +33,14 @@ public class UserEntity extends BaseDateTimeEntity {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_idx")
-    private ArrayList<CommentEntity> comments; // 사용자 댓글 목록
+    private List<CommentEntity> comments; // 사용자 댓글 목록
 
     @Builder
-    public UserEntity(Long idx) {
+    public UserEntity(Long idx, String id, String password, String name, String email) {
         this.idx = idx;
+        this.id = id;
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 }
