@@ -14,6 +14,10 @@ public class UserService {
         return userRepository.findByIdAndPassword(userId, password) != null;
     }
 
+    public boolean isExistId(String userId) {
+        return userRepository.findById(userId) != null;
+    }
+
     public boolean isExistName(String name) {
         return userRepository.findByName(name) != null;
     }

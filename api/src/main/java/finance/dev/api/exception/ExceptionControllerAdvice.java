@@ -32,13 +32,17 @@ public class ExceptionControllerAdvice {
                                 HttpStatus.BAD_REQUEST, "잘못된 요청이 전달되었습니다.", badRequestException));
     }
 
-    @MethodInfo(name = "handleIllegalStateException", description = "클라이언트에서 발생하는 잘못된 상태 예외를 처리합니다.")
+    @MethodInfo(
+            name = "handleIllegalStateException",
+            description = "클라이언트에서 발생하는 잘못된 상태 예외를 처리합니다.")
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ExceptionResponse> handleIllegalStateException(
             IllegalStateException illegalStateException) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(
                         ExceptionResponse.of(
-                                HttpStatus.UNAUTHORIZED, "JWT 토큰이 유효하지 않습니다.", illegalStateException));
+                                HttpStatus.UNAUTHORIZED,
+                                "JWT 토큰이 유효하지 않습니다.",
+                                illegalStateException));
     }
 }
