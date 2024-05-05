@@ -73,8 +73,7 @@ public class AdminUseCase {
         }catch (BadRequestException e){
             throw new BadRequestException(e.getMessage());
         }catch (Exception e){
-//            throw new Exception("관리자 로그인에 실패했습니다.");
-            throw new Exception(e.getMessage());
+            throw new Exception("관리자 로그인에 실패했습니다.");
         }
     }
 
