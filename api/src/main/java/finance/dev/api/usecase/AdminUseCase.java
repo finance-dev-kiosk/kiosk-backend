@@ -4,10 +4,18 @@ import finance.dev.api.dto.admin.*;
 import finance.dev.common.annotation.MethodInfo;
 import finance.dev.common.annotation.TypeInfo;
 import finance.dev.common.annotation.UseCase;
+import finance.dev.domain.entity.AdminEntity;
 import finance.dev.domain.handler.JwtHandler;
 import finance.dev.domain.service.AdminService;
 import lombok.Builder;
+import org.apache.coyote.BadRequestException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+
+import java.time.Duration;
 
 @UseCase
 @TypeInfo(name = "AdminUseCase", description = "관리자 유스케이스 클래스")
@@ -18,7 +26,55 @@ public class AdminUseCase {
     @MethodInfo(name = "adminLoginPost", description = "관리자 로그인을 처리합니다.")
     public ResponseEntity<AdminLoginPostResponse> adminLoginPost(
             AdminLoginPostRequest adminLoginPostRequest) throws Exception {
-        return null;
+        try {
+            //유효성 검사 1. ID,PW가 null인지 확인
+            if (adminLoginPostRequest.getUserId() == null
+                    || adminLoginPostRequest.getPassword() == null) {
+                throw new BadRequestException("ID 또는 PW가 null 입니다.");
+            }
+
+            //유효성 검사 2. ID,PW가 빈 문자열인지 확인
+            if (adminLoginPostRequest.getUserId().isEmpty()
+                    || adminLoginPostRequest.getPassword().isEmpty()) {
+                throw new BadRequestException("ID 또는 PW가 빈 문자열입니다.");
+            }
+
+            AdminEntity adminEntity = adminService.findByUserId(adminLoginPostRequest.getUserId());
+
+            if(adminEntity == null){
+                throw new BadRequestException("ID가 존재하지 않습니다.");
+            }
+
+            if(!adminEntity.getPassword().equals(adminLoginPostRequest.getPassword())){
+                throw new BadRequestException("PW가 존재하지 않습니다.");
+            }
+
+            // 로그인 성공(토큰 발급)
+            String accessToken = jwtHandler.generateAccessToken(adminLoginPostRequest.getUserId());
+            String refreshToken = jwtHandler.generateRefreshToken(adminLoginPostRequest.getUserId());
+
+            //쿠키 생성
+            ResponseCookie cookie = ResponseCookie.from("Authorization","Bearer" + refreshToken)
+                    .httpOnly(true)
+                    .path("/")
+                    .maxAge(Duration.ofDays(30))
+                    .build();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.SET_COOKIE, cookie.toString());
+
+            //응답
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(AdminLoginPostResponse.builder()
+                            .accessToken(accessToken)
+                            .build());
+
+        }catch (BadRequestException e){
+            throw new BadRequestException(e.getMessage());
+        }catch (Exception e){
+            throw new Exception("관리자 로그인에 실패했습니다.");
+        }
     }
 
     @MethodInfo(name = "adminRefreshTokenPost", description = "관리자 토큰 재발급을 처리합니다.")
