@@ -26,6 +26,18 @@ public class UserService {
         return userRepository.findByEmail(email) != null;
     }
 
+    public String getUserName(Long userIdx) {
+        return userRepository.findByIdx(userIdx).getName();
+    }
+
+    public String getUserId(Long userIdx) {
+        return userRepository.findByIdx(userIdx).getId();
+    }
+
+    public Long getUserIdxById(String userId) {
+        return userRepository.findById(userId).getIdx();
+    }
+
     public void register(String userId, String password, String name, String email) {
         userRepository.save(
                 UserEntity.builder().id(userId).password(password).name(name).email(email).build());

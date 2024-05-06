@@ -30,12 +30,7 @@ public class UserChkEmailAuthUseCase {
 
             authMailService.update(
                     authMailService.findAuthMailByEmail(email),
-                    AuthMailEntity.builder()
-                            .email(email)
-                            .code(authCode)
-                            .isVerified(true)
-                            .build()
-            );
+                    AuthMailEntity.builder().email(email).code(authCode).isVerified(true).build());
 
             return ResponseEntity.ok().build();
         } catch (BadRequestException e) {

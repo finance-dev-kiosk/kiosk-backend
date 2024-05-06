@@ -8,10 +8,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @TypeInfo(name = "UserRepository", description = "회원 레포지토리 인터페이스")
 @EnableJpaRepositories
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
+    UserEntity findByIdx(Long userIdx);
+
     UserEntity findById(String userId);
 
     UserEntity findByEmail(String email);
 
     UserEntity findByName(String name);
+
     UserEntity findByIdAndPassword(String userId, String password);
 }

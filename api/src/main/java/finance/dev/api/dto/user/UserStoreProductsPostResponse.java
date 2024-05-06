@@ -13,7 +13,3 @@ public class UserStoreProductsPostResponse {
         this.products = products;
     }
 }
-
-class UserProductPost {
-    public UserProductPost(Long idx, String name, int price) {}
-}
