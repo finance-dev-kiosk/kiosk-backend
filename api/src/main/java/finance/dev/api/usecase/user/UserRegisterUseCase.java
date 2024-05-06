@@ -121,8 +121,10 @@ public class UserRegisterUseCase {
             }
             if (!authMailService.existsAuthMailByEmail(userRegisterPostRequest.getEmail())) {
                 errorMessage4 += "• 해당 이메일로 인증 메일이 발송되지 않았습니다.\n";
-            }
-            else if (authMailService.findAuthMailByEmail(userRegisterPostRequest.getEmail()).getIsVerified() == Boolean.FALSE) {
+            } else if (authMailService
+                            .findAuthMailByEmail(userRegisterPostRequest.getEmail())
+                            .getIsVerified()
+                    == Boolean.FALSE) {
                 errorMessage4 += "• 해당 이메일로 인증이 완료되지 않았습니다.\n";
             }
             if (!errorMessage4.equals("이메일 유효성 검사에 실패했습니다.\n")) {

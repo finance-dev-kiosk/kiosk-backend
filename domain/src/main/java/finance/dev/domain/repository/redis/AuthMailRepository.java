@@ -5,8 +5,6 @@ import finance.dev.domain.entity.AuthMailEntity;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.Optional;
-
 @TypeInfo(name = "AuthMailRepository", description = "인증 이메일 레포지토리 인터페이스")
 @EnableRedisRepositories
 public interface AuthMailRepository extends CrudRepository<AuthMailEntity, Long> {
