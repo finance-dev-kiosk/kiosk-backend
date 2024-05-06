@@ -12,6 +12,10 @@ import org.springframework.stereotype.Service;
 public class StoreService {
     private final EntityManager entityManager;
 
+    public StoreEntity getStore(Long storeId) {
+        return entityManager.find(StoreEntity.class, storeId);
+    }
+
     public List<StoreEntity> getStores(
             String searchValue,
             int searchPageNum,
