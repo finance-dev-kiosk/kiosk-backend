@@ -25,6 +25,7 @@ public class ReviewEntity {
     private String image; // 리뷰 이미지
 
     @Column(name = "review_content")
+    @Lob
     private String content; // 리뷰 내용
 
     @Column(name = "review_url")
