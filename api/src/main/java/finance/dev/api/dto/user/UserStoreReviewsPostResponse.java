@@ -18,14 +18,3 @@ public class UserStoreReviewsPostResponse {
         this.reviews = reviews;
     }
 }
-
-class UserReviewPost {
-    public UserReviewPost(
-            Long idx,
-            String name,
-            String content,
-            String date,
-            String image,
-            String blogName,
-            String url) {}
-}
