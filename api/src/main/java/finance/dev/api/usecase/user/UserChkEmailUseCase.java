@@ -8,13 +8,12 @@ import finance.dev.domain.config.EmailUtils;
 import finance.dev.domain.entity.AuthMailEntity;
 import finance.dev.domain.service.AuthMailService;
 import finance.dev.domain.service.UserService;
-import org.apache.coyote.BadRequestException;
-import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
+import org.apache.coyote.BadRequestException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 
 @UseCase
 @TypeInfo(name = "UserChkEmailUseCase", description = "이메일 인증 유스케이스 클래스")
@@ -43,7 +42,9 @@ public class UserChkEmailUseCase {
                     "<h1>[이메일 인증]</h1><br>"
                             + "<p>아래 링크에서 이메일 인증을 완료해주세요.</p><br>"
                             + "<a href='"
-                            + System.getenv("SERVER_URL") + ":" + System.getenv("SERVER_PORT")
+                            + System.getenv("SERVER_URL")
+                            + ":"
+                            + System.getenv("SERVER_PORT")
                             + "/user/auth?email="
                             + userChkEmailPostRequest.getEmail()
                             + "&key="
@@ -73,7 +74,9 @@ public class UserChkEmailUseCase {
             do {
                 num = random.nextInt(75) + 48;
 
-                if ((num >= 48 && num <= 57) || (num >= 65 && num <= 90) || (num >= 97 && num <= 122)) {
+                if ((num >= 48 && num <= 57)
+                        || (num >= 65 && num <= 90)
+                        || (num >= 97 && num <= 122)) {
                     stringBuilder.append((char) num);
                 } else {
                     continue;
@@ -97,7 +100,10 @@ public class UserChkEmailUseCase {
                         .build());
     }
 
-    public UserChkEmailUseCase(UserService userService, AuthMailService authMailService, JavaMailSender javaMailSender) {
+    public UserChkEmailUseCase(
+            UserService userService,
+            AuthMailService authMailService,
+            JavaMailSender javaMailSender) {
         this.userService = userService;
         this.authMailService = authMailService;
         this.javaMailSender = javaMailSender;
