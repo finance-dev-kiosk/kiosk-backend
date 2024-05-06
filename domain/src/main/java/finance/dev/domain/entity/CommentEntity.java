@@ -28,7 +28,10 @@ public class CommentEntity extends BaseDateTimeEntity {
     private Long storeIdx; // 가게 식별자
 
     @Builder
-    public CommentEntity(Long idx) {
+    public CommentEntity(Long idx, String content, Long userIdx, Long storeIdx) {
         this.idx = idx;
+        this.content = content;
+        this.userIdx = userIdx;
+        this.storeIdx = storeIdx;
     }
 }
