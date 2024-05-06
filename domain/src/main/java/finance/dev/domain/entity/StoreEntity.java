@@ -38,10 +38,10 @@ public class StoreEntity {
     private String category; // 가게 카테고리
 
     @Column(name = "store_is_packaged")
-    private boolean isPackaged; // 포장 가능 여부
+    private Boolean isPackaged; // 포장 가능 여부
 
     @Column(name = "store_is_delivery")
-    private boolean isDelivery; // 배달 가능 여부
+    private Boolean isDelivery; // 배달 가능 여부
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_idx")
@@ -67,8 +67,8 @@ public class StoreEntity {
             String address2,
             String address3,
             String category,
-            boolean isPackaged,
-            boolean isDelivery) {
+            Boolean isPackaged,
+            Boolean isDelivery) {
         this.name = name;
         this.tel = tel;
         this.address1 = address1;

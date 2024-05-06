@@ -9,8 +9,6 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-import java.io.UnsupportedEncodingException;
-
 @TypeInfo(name = "EmailUtils", description = "이메일 유틸 클래스")
 public class EmailUtils {
     private final JavaMailSender javaMailSender;
@@ -38,8 +36,7 @@ public class EmailUtils {
     @MethodInfo(name = "setFrom", description = "이메일 발신자를 설정합니다.")
     public void setFrom() throws Exception {
         try {
-            mimeMessageHelper.setFrom(new InternetAddress(
-                    "pocj8ur4in@naver.com", "Finance Dev"));
+            mimeMessageHelper.setFrom(new InternetAddress("pocj8ur4in@naver.com", "성수맛집"));
         } catch (MessagingException e) {
             throw new Exception("이메일 발신자 설정에 실패했습니다.");
         }

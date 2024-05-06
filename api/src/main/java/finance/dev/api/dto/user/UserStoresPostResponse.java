@@ -2,7 +2,9 @@ package finance.dev.api.dto.user;
 
 import java.util.ArrayList;
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 public class UserStoresPostResponse {
     private int storeCount; // 가게 수
     private int pageCount; // 페이지 수
@@ -14,16 +16,4 @@ public class UserStoresPostResponse {
         this.pageCount = pageCount;
         this.stores = stores;
     }
-}
-
-class UserStorePost {
-    @Builder
-    public UserStorePost(
-            Long idx,
-            String name,
-            String category,
-            String address,
-            ArrayList<String> period,
-            Boolean isDelivery,
-            Boolean isPackaged) {}
 }

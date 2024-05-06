@@ -1,6 +1,7 @@
 package finance.dev.api.dto.user;
 
 import finance.dev.domain.type.StoreSearchSort;
+import finance.dev.domain.type.StoreSearchType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,6 +12,7 @@ public class UserStoresPostRequest {
     private int searchPageNum; // 검색 페이지 번호
     private int searchPageSize; // 검색 페이지 사이즈
     private StoreSearchSort userSearchSort; // 검색 정렬
+    private StoreSearchType userSearchType; // 검색 타입
 
     @Builder
     public UserStoresPostRequest(
@@ -18,11 +20,13 @@ public class UserStoresPostRequest {
             String searchValue,
             int searchPageNum,
             int searchPageSize,
-            StoreSearchSort userSearchSort) {
+            StoreSearchSort userSearchSort,
+            StoreSearchType userSearchType) {
         this.accessToken = accessToken;
         this.searchValue = searchValue;
         this.searchPageNum = searchPageNum;
         this.searchPageSize = searchPageSize;
         this.userSearchSort = userSearchSort;
+        this.userSearchType = userSearchType;
     }
 }
