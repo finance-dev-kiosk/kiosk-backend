@@ -5,6 +5,7 @@ import finance.dev.common.annotation.MethodInfo;
 import finance.dev.common.annotation.TypeInfo;
 import finance.dev.common.annotation.UseCase;
 import finance.dev.domain.entity.AdminEntity;
+import finance.dev.domain.entity.StoreEntity;
 import finance.dev.domain.entity.UserEntity;
 import finance.dev.domain.handler.JwtHandler;
 import finance.dev.domain.service.AdminService;
@@ -230,7 +231,53 @@ public class AdminUseCase {
     @MethodInfo(name = "adminStoresPost", description = "관리자 가게 목록 조회를 처리합니다.")
     public ResponseEntity<AdminStoresPostResponse> adminStoresPost(
             AdminStoresPostRequest adminStoresPostRequest)  throws Exception {
-        return null;
+        try{
+            //토큰 파싱
+            String userId= jwtHandler.parseAccessToken(adminStoresPostRequest.getAccessToken());
+
+            //아이디 존재 유효성 검사
+            if(!adminService.isExistId(userId)){
+                throw new BadRequestException("존재하지 않는 아이디입니다.");
+            }
+
+            //검색 값 유효성 검사
+            if(adminStoresPostRequest.getSearchValue() == null){
+                throw new BadRequestException("검색값이 없습니다.");
+            }
+
+            //검색
+            List<StoreEntity> storeEntities =
+                    userService.searchStores(
+                            adminStoresPostRequest.getStoreSearchType(),
+                            adminStoresPostRequest.getSearchValue(),
+                            adminStoresPostRequest.getSearchPageNum(),
+                            adminStoresPostRequest.getSearchPageSize(),
+                            adminStoresPostRequest.getStoreSearchSort());
+
+            //검색 값 반환
+            AdminStoresPostResponse adminStoresPostResponse =
+                    AdminStoresPostResponse.builder()
+                            .storeCount(storeEntities.size())
+                            .pageCount(
+                                    storeEntities.size()
+                                            / adminStoresPostRequest.getSearchPageSize())
+                            .stores(
+                                    storeEntities.stream()
+                                            .map(
+                                                    storeEntity ->
+                                                            AdminStorePost.builder()
+                                                                    .idx(storeEntity.getIdx())
+                                                                    .name(storeEntity.getName())
+                                                                    .category(storeEntity.getCategory())
+                                                                    .build())
+                                            .collect(Collectors.toCollection(ArrayList::new)))
+                            .build();
+            return ResponseEntity.ok().body(adminStoresPostResponse);
+        }catch(BadRequestException e){
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @MethodInfo(name = "adminStorePost", description = "관리자 가게 조회를 처리합니다.")

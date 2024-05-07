@@ -1,8 +1,11 @@
 package finance.dev.domain.service;
 
 import finance.dev.common.annotation.TypeInfo;
+import finance.dev.domain.entity.StoreEntity;
 import finance.dev.domain.entity.UserEntity;
 import finance.dev.domain.repository.jpa.UserRepository;
+import finance.dev.domain.type.StoreSearchSort;
+import finance.dev.domain.type.StoreSearchType;
 import finance.dev.domain.type.UserSearchSort;
 import finance.dev.domain.type.UserSearchType;
 import jakarta.persistence.EntityManager;
@@ -61,6 +64,10 @@ public class UserService {
         userRepository.deleteById(userIdx);
     }
 
+    public UserEntity getUser(Long userIdx){
+        return entityManager.find(UserEntity.class, userIdx);
+    }
+
     //admin에서 search
     public List<UserEntity> searchUsers(
             UserSearchType userSearchType,
@@ -109,8 +116,43 @@ public class UserService {
         return query.getResultList();
     }
 
-    public UserEntity getUser(Long userIdx){
-        return entityManager.find(UserEntity.class, userIdx);
+
+
+    //admin에서 search
+    public List<StoreEntity> searchStores(
+            StoreSearchType storeSearchType,
+            String searchValue,
+            int searchPageNum,
+            int searchPageSize,
+            StoreSearchSort storeSearchSort
+    ){
+        StringBuilder queryString = new StringBuilder("SELECT s FROM StoreEntity s");
+
+        if (storeSearchType == StoreSearchType.NAME) {
+            queryString.append(" WHERE s.name LIKE '%").append(searchValue).append("%'");
+        } else if (storeSearchType == StoreSearchType.CATEGORY) {
+            queryString.append(" WHERE s.category LIKE '%").append(searchValue).append("%'");
+        } else if (storeSearchType == StoreSearchType.ENTIRE) {
+            queryString.append(" WHERE s.name LIKE '%").append(searchValue).append("%'");
+            queryString.append(" OR s.category LIKE '%").append(searchValue).append("%'");
+        } else {
+            queryString.append(" WHERE s.name LIKE '%").append(searchValue).append("%'");
+        }
+
+        if (storeSearchSort == StoreSearchSort.IDX_ASC) {
+            queryString.append(" ORDER BY s.idx ASC");
+        } else if (storeSearchSort == StoreSearchSort.IDX_DESC) {
+            queryString.append(" ORDER BY s.idx DESC");
+        } else if(storeSearchSort == StoreSearchSort.NAME_ASC) {
+            queryString.append(" ORDER BY s.name ASC");
+        } else if(storeSearchSort == StoreSearchSort.NAME_DESC) {
+            queryString.append(" ORDER BY s.name DESC");
+        } else {
+            queryString.append(" ORDER BY s.idx ASC");
+        }
+        Query query = entityManager.createQuery(queryString.toString());
+
+        return query.getResultList();
     }
 
     public UserService(UserRepository userRepository, EntityManager entityManager, UserEntity userEntity) {

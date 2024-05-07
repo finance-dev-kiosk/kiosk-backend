@@ -1,7 +1,9 @@
 package finance.dev.api.dto.admin;
 
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 public class AdminStorePost {
     private Long idx;
     private String name;
