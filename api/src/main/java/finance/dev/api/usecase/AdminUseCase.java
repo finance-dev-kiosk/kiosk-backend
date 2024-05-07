@@ -9,6 +9,7 @@ import finance.dev.domain.entity.StoreEntity;
 import finance.dev.domain.entity.UserEntity;
 import finance.dev.domain.handler.JwtHandler;
 import finance.dev.domain.service.AdminService;
+import finance.dev.domain.service.StoreService;
 import finance.dev.domain.service.UserService;
 import finance.dev.domain.type.UserSearchSort;
 import finance.dev.domain.type.UserSearchType;
@@ -32,6 +33,7 @@ public class AdminUseCase {
     private final AdminService adminService;
     private final JwtHandler jwtHandler;
     private final UserService userService;
+    private final StoreService storeService;
 
     @MethodInfo(name = "adminLoginPost", description = "관리자 로그인을 처리합니다.")
     public ResponseEntity<AdminLoginPostResponse> adminLoginPost(
@@ -282,8 +284,36 @@ public class AdminUseCase {
 
     @MethodInfo(name = "adminStorePost", description = "관리자 가게 조회를 처리합니다.")
     public ResponseEntity<AdminStorePostResponse> adminStorePost(
-            AdminStorePostRequest adminStorePostRequest, String storeIdx)  throws Exception {
-        return null;
+            AdminStorePostRequest adminStorePostRequest, Long storeIdx)  throws Exception {
+        try{
+            //토큰 파싱
+            String userId= jwtHandler.parseAccessToken(adminStorePostRequest.getAccessToken());
+
+            //아이디 존재 유효성 검사
+            if(!adminService.isExistId(userId)){
+                throw new BadRequestException("존재하지 않는 아이디입니다.");
+            }
+
+            StoreEntity storeEntity = storeService.getStore(storeIdx);
+
+            if (storeEntity == null) {
+                throw new BadRequestException("존재하지 않는 가게입니다.");
+            }
+
+            return ResponseEntity.ok(
+                    AdminStorePostResponse.builder()
+                            .idx(storeEntity.getIdx())
+                            .name(storeEntity.getName())
+                            .category(storeEntity.getCategory())
+                            .phone(storeEntity.getTel())
+                            .isDelivery(storeEntity.getIsDelivery())
+                            .isPackaged(storeEntity.getIsPackaged())
+                            .build());
+        } catch(BadRequestException e){
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @MethodInfo(name = "adminStorePatch", description = "관리자 가게 수정을 처리합니다.")
@@ -323,9 +353,10 @@ public class AdminUseCase {
     }
 
     @Builder
-    public AdminUseCase(AdminService adminService, JwtHandler jwtHandler, UserService userService) {
+    public AdminUseCase(AdminService adminService, JwtHandler jwtHandler, UserService userService, StoreService storeService) {
         this.adminService = adminService;
         this.jwtHandler = jwtHandler;
         this.userService = userService;
+        this.storeService = storeService;
     }
 }

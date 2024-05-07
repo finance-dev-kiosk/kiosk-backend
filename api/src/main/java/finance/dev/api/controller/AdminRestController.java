@@ -308,7 +308,7 @@ public class AdminRestController {
             })
     public ResponseEntity<AdminStorePostResponse> adminStorePost(
             AdminStorePostRequest adminStorePostRequest,
-            @PathVariable String storeIdx)
+            @PathVariable Long storeIdx)
             throws Exception {
         return adminUseCase.adminStorePost(adminStorePostRequest, storeIdx);
     }
