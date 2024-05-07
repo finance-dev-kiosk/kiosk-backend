@@ -181,60 +181,97 @@ public class AdminUseCase {
 
     @MethodInfo(name = "adminUserPatch", description = "관리자 회원 수정을 처리합니다.")
     public ResponseEntity<Void> adminUserPatch(
-            AdminUserPatchRequest adminUserPatchRequest, String userIdx) {
-        return null;
+            AdminUserPatchRequest adminUserPatchRequest, Long userIdx) throws Exception {
+        try{
+            //토큰 파싱
+            String userId= jwtHandler.parseAccessToken(adminUserPatchRequest.getAccessToken());
+
+            //아이디 존재 유효성 검사
+            if(!adminService.isExistId(userId)){
+                throw new BadRequestException("존재하지 않는 아이디입니다.");
+            }
+
+            String name = adminUserPatchRequest.getName();
+            userService.updateUser(userIdx, name);
+
+            return ResponseEntity.ok().build();
+
+        }catch(BadRequestException e){
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @MethodInfo(name = "adminUserDelete", description = "관리자 회원 삭제를 처리합니다.")
-    public ResponseEntity<Void> adminUserDelete(String userIdx) {
-        return null;
+    public ResponseEntity<Void> adminUserDelete(
+            AdminUserDeleteRequest adminUserDeleteRequest,
+            Long userIdx) throws Exception{
+        try{
+            //토큰 파싱
+            String userId= jwtHandler.parseAccessToken(adminUserDeleteRequest.getAccessToken());
+
+            //아이디 존재 유효성 검사
+            if(!adminService.isExistId(userId)){
+                throw new BadRequestException("존재하지 않는 아이디입니다.");
+            }
+            userService.deleteUser(userIdx);
+
+            return ResponseEntity.ok().build();
+        } catch (BadRequestException e) {
+            throw new BadRequestException(e.getMessage());
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @MethodInfo(name = "adminStoresPost", description = "관리자 가게 목록 조회를 처리합니다.")
     public ResponseEntity<AdminStoresPostResponse> adminStoresPost(
-            AdminStoresPostRequest adminStoresPostRequest) {
+            AdminStoresPostRequest adminStoresPostRequest)  throws Exception {
         return null;
     }
 
     @MethodInfo(name = "adminStorePost", description = "관리자 가게 조회를 처리합니다.")
     public ResponseEntity<AdminStorePostResponse> adminStorePost(
-            AdminStorePostRequest adminStorePostRequest, String storeIdx) {
+            AdminStorePostRequest adminStorePostRequest, String storeIdx)  throws Exception {
         return null;
     }
 
     @MethodInfo(name = "adminStorePatch", description = "관리자 가게 수정을 처리합니다.")
     public ResponseEntity<Void> adminStorePatch(
-            AdminStorePatchRequest adminStorePatchRequest, String storeIdx) {
+            AdminStorePatchRequest adminStorePatchRequest, String storeIdx) throws Exception{
         return null;
     }
 
     @MethodInfo(name = "adminStoreDelete", description = "관리자 가게 삭제를 처리합니다.")
-    public ResponseEntity<Void> adminStoreDelete(String storeIdx) {
+    public ResponseEntity<Void> adminStoreDelete(String storeIdx)  throws Exception {
         return null;
     }
 
     @MethodInfo(name = "adminProductsPost", description = "관리자 상품 목록 조회를 처리합니다.")
     public ResponseEntity<AdminProductsPostResponse> adminProductsPost(
-            AdminProductsPostRequest adminProductsPostRequest) {
+            AdminProductsPostRequest adminProductsPostRequest)  throws Exception {
         return null;
     }
 
     @MethodInfo(name = "adminProductPost", description = "관리자 상품 조회를 처리합니다.")
     public ResponseEntity<AdminProductPostResponse> adminProductPost(
             AdminProductPostRequest adminProductPostRequest,
-            String productIdx) {
+            String productIdx)  throws Exception {
         return null;
     }
 
     @MethodInfo(name = "adminProductPatch", description = "관리자 상품 수정을 처리합니다.")
     public ResponseEntity<Void> adminProductPatch(
             AdminProductPatchRequest adminProductPatchRequest,
-            String productIdx) {
+            String productIdx)  throws Exception {
         return null;
     }
 
     @MethodInfo(name = "adminProductDelete", description = "관리자 상품 삭제를 처리합니다.")
-    public ResponseEntity<Void> adminProductDelete(String productIdx) {
+    public ResponseEntity<Void> adminProductDelete(String productIdx)  throws Exception {
         return null;
     }
 
