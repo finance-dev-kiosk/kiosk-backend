@@ -17,6 +17,3 @@ public class AdminProductsPostResponse {
     }
 }
 
-class AdminProductPost {
-    public AdminProductPost(Long idx, String name, int price) {}
-}

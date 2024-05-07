@@ -12,5 +12,6 @@ import java.util.Optional;
 public interface AdminRepository extends JpaRepository<AdminEntity, Long> {
     AdminEntity findById(String adminId);
 
+    Boolean existsById(String adminId);
 
 }
