@@ -96,7 +96,10 @@ public class UserService {
 
         return query.getResultList();
     }
-
+    public UserEntity getUser(Long userIdx){
+        return entityManager.find(UserEntity.class, userIdx);
+    }
+  
     public UserService(UserRepository userRepository, EntityManager entityManager) {
         this.userRepository = userRepository;
         this.entityManager = entityManager;

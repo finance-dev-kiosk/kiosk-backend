@@ -112,11 +112,12 @@ public class AdminUseCase {
             //검색
             List<UserEntity> userEntities =
                     userService.searchUsers(
-                    adminUsersPostRequest.getUserSearchType(),
-                    adminUsersPostRequest.getSearchValue(),
-                    adminUsersPostRequest.getSearchPageNum(),
-                    adminUsersPostRequest.getSearchPageSize(),
-                    adminUsersPostRequest.getUserSearchSort());
+                            adminUsersPostRequest.getUserSearchType(),
+                            adminUsersPostRequest.getSearchValue(),
+                            adminUsersPostRequest.getSearchPageNum(),
+                            adminUsersPostRequest.getSearchPageSize(),
+                            adminUsersPostRequest.getUserSearchSort());
+
 
             //검색 값 반환
             AdminUsersPostResponse adminUsersPostResponse =
@@ -124,7 +125,7 @@ public class AdminUseCase {
                             .userCount(userEntities.size())
                             .pageCount(
                                     userEntities.size()
-                                    / adminUsersPostRequest.getSearchPageSize())
+                                            / adminUsersPostRequest.getSearchPageSize())
                             .users(
                                     userEntities.stream()
                                             .map(
@@ -147,8 +148,36 @@ public class AdminUseCase {
 
     @MethodInfo(name = "adminUserPost", description = "관리자 회원 조회를 처리합니다.")
     public ResponseEntity<AdminUserPostResponse> adminUserPost(
-            AdminUserPostRequest adminUserPostRequest, String userIdx) {
-        return null;
+            AdminUserPostRequest adminUserPostRequest, Long userIdx) throws Exception {
+        try{
+            //토큰 파싱
+            String userId= jwtHandler.parseAccessToken(adminUserPostRequest.getAccessToken());
+
+            //아이디 존재 유효성 검사
+            if(!adminService.isExistId(userId)){
+                throw new BadRequestException("존재하지 않는 아이디입니다.");
+            }
+
+            UserEntity userEntity = userService.getUser(userIdx);
+
+            if (userEntity == null) {
+                throw new BadRequestException("존재하지 않는 회원입니다.");
+            }
+
+            return ResponseEntity.ok(
+                    AdminUserPostResponse.builder()
+                            .idx(userEntity.getIdx())
+                            .id(userEntity.getId())
+                            .name(userEntity.getName())
+                            .email(userEntity.getEmail())
+                            .created(userEntity.getCreated())
+                            .updated(userEntity.getLastModified())
+                            .build());
+        } catch(BadRequestException e){
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @MethodInfo(name = "adminUserPatch", description = "관리자 회원 수정을 처리합니다.")

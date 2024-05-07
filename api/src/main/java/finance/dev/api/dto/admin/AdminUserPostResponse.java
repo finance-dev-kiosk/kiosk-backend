@@ -1,6 +1,8 @@
 package finance.dev.api.dto.admin;
 
 import java.time.LocalDateTime;
+
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -12,6 +14,7 @@ public class AdminUserPostResponse {
     private LocalDateTime created; // 가입일
     private LocalDateTime updated; // 수정일
 
+    @Builder
     public AdminUserPostResponse(
             Long idx,
             String id,
