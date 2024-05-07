@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 @UseCase
 @TypeInfo(name = "AdminUseCase", description = "관리자 유스케이스 클래스")
 public class AdminUseCase {
-    private static final Logger log = LoggerFactory.getLogger(AdminUseCase.class);
     private final AdminService adminService;
     private final JwtHandler jwtHandler;
     private final UserService userService;

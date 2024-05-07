@@ -57,9 +57,6 @@ spring:
   config:
     activate:
       on-profile: dev
-#logging:
-#  level:
-#    root: trace
 ---
 spring:
   config:
