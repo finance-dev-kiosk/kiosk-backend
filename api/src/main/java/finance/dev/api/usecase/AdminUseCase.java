@@ -5,10 +5,12 @@ import finance.dev.common.annotation.MethodInfo;
 import finance.dev.common.annotation.TypeInfo;
 import finance.dev.common.annotation.UseCase;
 import finance.dev.domain.entity.AdminEntity;
+import finance.dev.domain.entity.ProductEntity;
 import finance.dev.domain.entity.StoreEntity;
 import finance.dev.domain.entity.UserEntity;
 import finance.dev.domain.handler.JwtHandler;
 import finance.dev.domain.service.AdminService;
+import finance.dev.domain.service.ProductService;
 import finance.dev.domain.service.StoreService;
 import finance.dev.domain.service.UserService;
 import finance.dev.domain.type.UserSearchSort;
@@ -17,6 +19,7 @@ import lombok.Builder;
 import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +37,7 @@ public class AdminUseCase {
     private final JwtHandler jwtHandler;
     private final UserService userService;
     private final StoreService storeService;
+    private final ProductService productService;
 
     @MethodInfo(name = "adminLoginPost", description = "관리자 로그인을 처리합니다.")
     public ResponseEntity<AdminLoginPostResponse> adminLoginPost(
@@ -249,12 +253,12 @@ public class AdminUseCase {
 
             //검색
             List<StoreEntity> storeEntities =
-                    userService.searchStores(
-                            adminStoresPostRequest.getStoreSearchType(),
+                    storeService.getStoresList(
                             adminStoresPostRequest.getSearchValue(),
                             adminStoresPostRequest.getSearchPageNum(),
                             adminStoresPostRequest.getSearchPageSize(),
-                            adminStoresPostRequest.getStoreSearchSort());
+                            adminStoresPostRequest.getStoreSearchSort(),
+                            adminStoresPostRequest.getStoreSearchType());
 
             //검색 값 반환
             AdminStoresPostResponse adminStoresPostResponse =
@@ -330,7 +334,52 @@ public class AdminUseCase {
     @MethodInfo(name = "adminProductsPost", description = "관리자 상품 목록 조회를 처리합니다.")
     public ResponseEntity<AdminProductsPostResponse> adminProductsPost(
             AdminProductsPostRequest adminProductsPostRequest)  throws Exception {
-        return null;
+        try{
+            //토큰 파싱
+            String userId= jwtHandler.parseAccessToken(adminProductsPostRequest.getAccessToken());
+
+            //아이디 존재 유효성 검사
+            if(!adminService.isExistId(userId)){
+                throw new BadRequestException("존재하지 않는 아이디입니다.");
+            }
+
+            //검색 값 유효성 검사
+            if(adminProductsPostRequest.getSearchValue() == null){
+                throw new BadRequestException("검색값이 없습니다.");
+            }
+
+            //검색
+            List<ProductEntity> productEntities =
+                    productService.getProducts(
+                            adminProductsPostRequest.getSearchValue(),
+                            adminProductsPostRequest.getSearchPageNum(),
+                            adminProductsPostRequest.getSearchPageSize(),
+                            adminProductsPostRequest.getProductSearchSort());
+
+            //검색 값 반환
+            AdminProductsPostResponse adminProductsPostResponse =
+                    AdminProductsPostResponse.builder()
+                            .productCount(productEntities.size())
+                            .pageCount(
+                                    productEntities.size()
+                                            / adminProductsPostRequest.getSearchPageSize())
+                            .products(
+                                    productEntities.stream()
+                                            .map(
+                                                    productEntity ->
+                                                            AdminProductPost.builder()
+                                                                    .idx(productEntity.getIdx())
+                                                                    .name(productEntity.getName())
+                                                                    .price(productEntity.getPrice())
+                                                                    .build())
+                                            .collect(Collectors.toCollection(ArrayList::new)))
+                            .build();
+            return ResponseEntity.ok().body(adminProductsPostResponse);
+        }catch(BadRequestException e){
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @MethodInfo(name = "adminProductPost", description = "관리자 상품 조회를 처리합니다.")
@@ -353,10 +402,11 @@ public class AdminUseCase {
     }
 
     @Builder
-    public AdminUseCase(AdminService adminService, JwtHandler jwtHandler, UserService userService, StoreService storeService) {
+    public AdminUseCase(AdminService adminService, JwtHandler jwtHandler, UserService userService, StoreService storeService, @Qualifier("productService") ProductService productService) {
         this.adminService = adminService;
         this.jwtHandler = jwtHandler;
         this.userService = userService;
         this.storeService = storeService;
+        this.productService = productService;
     }
 }
