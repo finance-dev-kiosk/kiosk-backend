@@ -27,28 +27,28 @@ public class AdminRestController {
             description = "관리자 로그인을 합니다.",
             method = "POST",
             responses = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "관리자 로그인 성공",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(
-                                                        implementation =
-                                                                AdminLoginPostResponse.class))),
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "관리자 로그인 실패",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "서버 에러",
-                        content =
-                                @Content(
-                                        schema = @Schema(implementation = ExceptionResponse.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "관리자 로그인 성공",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(
+                                            implementation =
+                                                    AdminLoginPostResponse.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "관리자 로그인 실패",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "서버 에러",
+                            content =
+                            @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<AdminLoginPostResponse> adminLoginPost(
             AdminLoginPostRequest adminLoginPostRequest) throws Exception {
@@ -62,29 +62,29 @@ public class AdminRestController {
             description = "관리자 토큰을 갱신합니다.",
             method = "POST",
             responses = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "관리자 토큰 갱신 성공",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(
-                                                        implementation =
-                                                                AdminRefreshTokenPostResponse
-                                                                        .class))),
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "관리자 토큰 갱신 실패",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "서버 에러",
-                        content =
-                                @Content(
-                                        schema = @Schema(implementation = ExceptionResponse.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "관리자 토큰 갱신 성공",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(
+                                            implementation =
+                                                    AdminRefreshTokenPostResponse
+                                                            .class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "관리자 토큰 갱신 실패",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "서버 에러",
+                            content =
+                            @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<AdminRefreshTokenPostResponse> adminRefreshTokenPost(
             @CookieValue String refreshToken) throws Exception {
@@ -98,35 +98,35 @@ public class AdminRestController {
             description = "사용자 목록을 조회합니다.",
             method = "POST",
             responses = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "사용자 목록 조회 성공",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(
-                                                        implementation =
-                                                                AdminUsersPostResponse.class))),
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "사용자 목록 조회 실패",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "401",
-                        description = "권한 없음",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "서버 에러",
-                        content =
-                                @Content(
-                                        schema = @Schema(implementation = ExceptionResponse.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "사용자 목록 조회 성공",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(
+                                            implementation =
+                                                    AdminUsersPostResponse.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "사용자 목록 조회 실패",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "권한 없음",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "서버 에러",
+                            content =
+                            @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<AdminUsersPostResponse> adminUsersPost(
             AdminUsersPostRequest adminUsersPostRequest)
@@ -141,28 +141,28 @@ public class AdminRestController {
             description = "사용자를 조회합니다.",
             method = "POST",
             responses = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "사용자 조회 성공",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(
-                                                        implementation =
-                                                                AdminUserPostResponse.class))),
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "사용자 조회 실패",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "서버 에러",
-                        content =
-                                @Content(
-                                        schema = @Schema(implementation = ExceptionResponse.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "사용자 조회 성공",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(
+                                            implementation =
+                                                    AdminUserPostResponse.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "사용자 조회 실패",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "서버 에러",
+                            content =
+                            @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<AdminUserPostResponse> adminUserPost(
             AdminUserPostRequest adminUserPostRequest,
@@ -178,26 +178,26 @@ public class AdminRestController {
             description = "사용자를 수정합니다.",
             method = "PATCH",
             responses = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "사용자 수정 성공",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "사용자 수정 실패",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "서버 에러",
-                        content =
-                                @Content(
-                                        schema = @Schema(implementation = ExceptionResponse.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "사용자 수정 성공",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "사용자 수정 실패",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "서버 에러",
+                            content =
+                            @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<Void> adminUserPatch(
             AdminUserPatchRequest adminUserPatchRequest,
@@ -213,26 +213,26 @@ public class AdminRestController {
             description = "사용자를 삭제합니다.",
             method = "DELETE",
             responses = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "사용자 삭제 성공",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "사용자 삭제 실패",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "서버 에러",
-                        content =
-                                @Content(
-                                        schema = @Schema(implementation = ExceptionResponse.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "사용자 삭제 성공",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "사용자 삭제 실패",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "서버 에러",
+                            content =
+                            @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<Void> adminUserDelete(
             @PathVariable String userIdx) throws Exception {
@@ -246,28 +246,28 @@ public class AdminRestController {
             description = "가게 목록을 조회합니다.",
             method = "POST",
             responses = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "가게 목록 조회 성공",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(
-                                                        implementation =
-                                                                AdminStoresPostResponse.class))),
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "가게 목록 조회 실패",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "서버 에러",
-                        content =
-                                @Content(
-                                        schema = @Schema(implementation = ExceptionResponse.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "가게 목록 조회 성공",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(
+                                            implementation =
+                                                    AdminStoresPostResponse.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "가게 목록 조회 실패",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "서버 에러",
+                            content =
+                            @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<AdminStoresPostResponse> adminStoresPost(
             AdminStoresPostRequest adminStoresPostRequest)
@@ -282,28 +282,28 @@ public class AdminRestController {
             description = "가게를 조회합니다.",
             method = "POST",
             responses = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "가게 조회 성공",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(
-                                                        implementation =
-                                                                AdminStorePostResponse.class))),
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "가게 조회 실패",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "서버 에러",
-                        content =
-                                @Content(
-                                        schema = @Schema(implementation = ExceptionResponse.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "가게 조회 성공",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(
+                                            implementation =
+                                                    AdminStorePostResponse.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "가게 조회 실패",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "서버 에러",
+                            content =
+                            @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<AdminStorePostResponse> adminStorePost(
             AdminStorePostRequest adminStorePostRequest,
@@ -319,26 +319,26 @@ public class AdminRestController {
             description = "가게를 수정합니다.",
             method = "PATCH",
             responses = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "가게 수정 성공",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "가게 수정 실패",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "서버 에러",
-                        content =
-                                @Content(
-                                        schema = @Schema(implementation = ExceptionResponse.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "가게 수정 성공",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "가게 수정 실패",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "서버 에러",
+                            content =
+                            @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<Void> adminStorePatch(
             AdminStorePatchRequest adminStorePatchRequest,
@@ -354,26 +354,26 @@ public class AdminRestController {
             description = "가게를 삭제합니다.",
             method = "DELETE",
             responses = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "가게 삭제 성공",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "가게 삭제 실패",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "서버 에러",
-                        content =
-                                @Content(
-                                        schema = @Schema(implementation = ExceptionResponse.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "가게 삭제 성공",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "가게 삭제 실패",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "서버 에러",
+                            content =
+                            @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<Void> adminStoreDelete(
             @PathVariable String storeIdx) throws Exception {
@@ -387,28 +387,28 @@ public class AdminRestController {
             description = "상품 목록을 조회합니다.",
             method = "POST",
             responses = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "상품 목록 조회 성공",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(
-                                                        implementation =
-                                                                AdminProductsPostResponse.class))),
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "상품 목록 조회 실패",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "서버 에러",
-                        content =
-                                @Content(
-                                        schema = @Schema(implementation = ExceptionResponse.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "상품 목록 조회 성공",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(
+                                            implementation =
+                                                    AdminProductsPostResponse.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "상품 목록 조회 실패",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "서버 에러",
+                            content =
+                            @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<AdminProductsPostResponse> adminProductsPost(
             AdminProductsPostRequest adminProductsPostRequest)
@@ -423,28 +423,28 @@ public class AdminRestController {
             description = "상품를 조회합니다.",
             method = "POST",
             responses = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "상품 조회 성공",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(
-                                                        implementation =
-                                                                AdminProductPostResponse.class))),
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "상품 조회 실패",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "서버 에러",
-                        content =
-                                @Content(
-                                        schema = @Schema(implementation = ExceptionResponse.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "상품 조회 성공",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(
+                                            implementation =
+                                                    AdminProductPostResponse.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "상품 조회 실패",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "서버 에러",
+                            content =
+                            @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<AdminProductPostResponse> adminProductPost(
             AdminProductPostRequest adminProductPostRequest,
@@ -460,26 +460,26 @@ public class AdminRestController {
             description = "상품를 수정합니다.",
             method = "PATCH",
             responses = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "상품 수정 성공",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "상품 수정 실패",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "서버 에러",
-                        content =
-                                @Content(
-                                        schema = @Schema(implementation = ExceptionResponse.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "상품 수정 성공",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "상품 수정 실패",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "서버 에러",
+                            content =
+                            @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<Void> adminProductPatch(
             AdminProductPatchRequest adminProductPatchRequest,
@@ -495,26 +495,26 @@ public class AdminRestController {
             description = "상품를 삭제합니다.",
             method = "DELETE",
             responses = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "상품 삭제 성공",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "400",
-                        description = "상품 삭제 실패",
-                        content =
-                                @Content(
-                                        schema =
-                                                @Schema(implementation = ExceptionResponse.class))),
-                @ApiResponse(
-                        responseCode = "500",
-                        description = "서버 에러",
-                        content =
-                                @Content(
-                                        schema = @Schema(implementation = ExceptionResponse.class)))
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "상품 삭제 성공",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "상품 삭제 실패",
+                            content =
+                            @Content(
+                                    schema =
+                                    @Schema(implementation = ExceptionResponse.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "서버 에러",
+                            content =
+                            @Content(
+                                    schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<Void> adminProductDelete(
             @PathVariable String productIdx) throws Exception {

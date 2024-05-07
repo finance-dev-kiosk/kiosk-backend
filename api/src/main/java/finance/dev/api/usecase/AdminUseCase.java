@@ -112,11 +112,11 @@ public class AdminUseCase {
             //검색
             List<UserEntity> userEntities =
                     userService.searchUsers(
-                    adminUsersPostRequest.getUserSearchType(),
-                    adminUsersPostRequest.getSearchValue(),
-                    adminUsersPostRequest.getSearchPageNum(),
-                    adminUsersPostRequest.getSearchPageSize(),
-                    adminUsersPostRequest.getUserSearchSort());
+                            adminUsersPostRequest.getUserSearchType(),
+                            adminUsersPostRequest.getSearchValue(),
+                            adminUsersPostRequest.getSearchPageNum(),
+                            adminUsersPostRequest.getSearchPageSize(),
+                            adminUsersPostRequest.getUserSearchSort());
 
             //검색 값 반환
             AdminUsersPostResponse adminUsersPostResponse =
@@ -124,7 +124,7 @@ public class AdminUseCase {
                             .userCount(userEntities.size())
                             .pageCount(
                                     userEntities.size()
-                                    / adminUsersPostRequest.getSearchPageSize())
+                                            / adminUsersPostRequest.getSearchPageSize())
                             .users(
                                     userEntities.stream()
                                             .map(
