@@ -52,13 +52,14 @@ spring:
             fallback: false
             port: 465
         debug: true
-
 ---
 spring:
   config:
     activate:
       on-profile: dev
-
+#logging:
+#  level:
+#    root: trace
 ---
 spring:
   config:

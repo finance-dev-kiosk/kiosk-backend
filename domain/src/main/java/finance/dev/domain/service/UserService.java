@@ -3,12 +3,18 @@ package finance.dev.domain.service;
 import finance.dev.common.annotation.TypeInfo;
 import finance.dev.domain.entity.UserEntity;
 import finance.dev.domain.repository.jpa.UserRepository;
+import finance.dev.domain.type.UserSearchSort;
+import finance.dev.domain.type.UserSearchType;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @TypeInfo(name = "UserService", description = "회원 서비스 클래스")
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final EntityManager entityManager;
 
     public boolean login(String userId, String password) {
         return userRepository.findByIdAndPassword(userId, password) != null;
@@ -43,7 +49,56 @@ public class UserService {
                 UserEntity.builder().id(userId).password(password).name(name).email(email).build());
     }
 
-    public UserService(UserRepository userRepository) {
+    //admin에서 search
+    public List<UserEntity> searchUsers(
+            UserSearchType userSearchType,
+            String searchValue,
+            int searchPageNum,
+            int searchPageSize,
+            UserSearchSort userSearchSort
+    ){
+        StringBuilder queryString = new StringBuilder("SELECT u FROM UserEntity u");
+
+        if (userSearchType == UserSearchType.NAME) {
+            queryString.append(" WHERE u.name LIKE '%").append(searchValue).append("%'");
+        } else if (userSearchType == UserSearchType.ID) {
+            queryString.append(" WHERE u.id LIKE '%").append(searchValue).append("%'");
+        } else if(userSearchType == UserSearchType.EMAIL) {
+            queryString.append(" WHERE u.email LIKE '%").append(searchValue).append("%'");
+        } else if (userSearchType == UserSearchType.ENTIRE) {
+            queryString.append(" WHERE u.name LIKE '%").append(searchValue).append("%'");
+            queryString.append(" OR u.id LIKE '%").append(searchValue).append("%'");
+            queryString.append(" OR u.email LIKE '%").append(searchValue).append("%'");
+        } else {
+            queryString.append(" WHERE u.id LIKE '%").append(searchValue).append("%'");
+        }
+
+        if (userSearchSort == UserSearchSort.IDX_ASC) {
+            queryString.append(" ORDER BY u.idx ASC");
+        } else if (userSearchSort == UserSearchSort.IDX_DESC) {
+            queryString.append(" ORDER BY u.idx DESC");
+        } else if(userSearchSort == UserSearchSort.ID_ASC) {
+            queryString.append(" ORDER BY u.id ASC");
+        } else if(userSearchSort == UserSearchSort.ID_DESC) {
+            queryString.append(" ORDER BY u.id DESC");
+        } else if(userSearchSort == UserSearchSort.NAME_ASC) {
+            queryString.append(" ORDER BY u.name ASC");
+        } else if(userSearchSort == UserSearchSort.NAME_DESC) {
+            queryString.append(" ORDER BY u.name DESC");
+        } else if(userSearchSort == UserSearchSort.CREATED_ASC) {
+            queryString.append(" ORDER BY u.created ASC");
+        } else if(userSearchSort == UserSearchSort.CREATED_DESC) {
+            queryString.append(" ORDER BY u.created DESC");
+        } else {
+            queryString.append(" ORDER BY u.id ASC");
+        }
+        Query query = entityManager.createQuery(queryString.toString());
+
+        return query.getResultList();
+    }
+
+    public UserService(UserRepository userRepository, EntityManager entityManager) {
         this.userRepository = userRepository;
+        this.entityManager = entityManager;
     }
 }

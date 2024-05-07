@@ -129,9 +129,9 @@ public class AdminRestController {
                                         schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<AdminUsersPostResponse> adminUsersPost(
-            AdminUsersPostRequest adminUsersPostRequest, @CookieValue String refreshToken)
+            AdminUsersPostRequest adminUsersPostRequest)
             throws Exception {
-        return adminUseCase.adminUsersPost(adminUsersPostRequest, refreshToken);
+        return adminUseCase.adminUsersPost(adminUsersPostRequest);
     }
 
     @MethodInfo(name = "adminUserPost", description = "사용자 정보를 조회합니다.")
@@ -166,10 +166,9 @@ public class AdminRestController {
             })
     public ResponseEntity<AdminUserPostResponse> adminUserPost(
             AdminUserPostRequest adminUserPostRequest,
-            @PathVariable String userIdx,
-            @CookieValue String refreshToken)
+            @PathVariable String userIdx)
             throws Exception {
-        return adminUseCase.adminUserPost(adminUserPostRequest, userIdx, refreshToken);
+        return adminUseCase.adminUserPost(adminUserPostRequest, userIdx);
     }
 
     @MethodInfo(name = "adminUserPatch", description = "사용자 정보를 수정합니다.")
@@ -202,10 +201,9 @@ public class AdminRestController {
             })
     public ResponseEntity<Void> adminUserPatch(
             AdminUserPatchRequest adminUserPatchRequest,
-            @PathVariable String userIdx,
-            @CookieValue String refreshToken)
+            @PathVariable String userIdx)
             throws Exception {
-        return adminUseCase.adminUserPatch(adminUserPatchRequest, userIdx, refreshToken);
+        return adminUseCase.adminUserPatch(adminUserPatchRequest, userIdx);
     }
 
     @MethodInfo(name = "adminUserDelete", description = "사용자 정보를 삭제합니다.")
@@ -237,8 +235,8 @@ public class AdminRestController {
                                         schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<Void> adminUserDelete(
-            @PathVariable String userIdx, @CookieValue String refreshToken) throws Exception {
-        return adminUseCase.adminUserDelete(userIdx, refreshToken);
+            @PathVariable String userIdx) throws Exception {
+        return adminUseCase.adminUserDelete(userIdx);
     }
 
     @MethodInfo(name = "adminStoresPost", description = "가게 목록을 조회합니다.")
@@ -272,9 +270,9 @@ public class AdminRestController {
                                         schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<AdminStoresPostResponse> adminStoresPost(
-            AdminStoresPostRequest adminStoresPostRequest, @CookieValue String refreshToken)
+            AdminStoresPostRequest adminStoresPostRequest)
             throws Exception {
-        return adminUseCase.adminStoresPost(adminStoresPostRequest, refreshToken);
+        return adminUseCase.adminStoresPost(adminStoresPostRequest);
     }
 
     @MethodInfo(name = "adminStorePost", description = "가게 정보를 조회합니다.")
@@ -309,10 +307,9 @@ public class AdminRestController {
             })
     public ResponseEntity<AdminStorePostResponse> adminStorePost(
             AdminStorePostRequest adminStorePostRequest,
-            @PathVariable String storeIdx,
-            @CookieValue String refreshToken)
+            @PathVariable String storeIdx)
             throws Exception {
-        return adminUseCase.adminStorePost(adminStorePostRequest, storeIdx, refreshToken);
+        return adminUseCase.adminStorePost(adminStorePostRequest, storeIdx);
     }
 
     @MethodInfo(name = "adminStorePatch", description = "가게 정보를 수정합니다.")
@@ -345,10 +342,9 @@ public class AdminRestController {
             })
     public ResponseEntity<Void> adminStorePatch(
             AdminStorePatchRequest adminStorePatchRequest,
-            @PathVariable String storeIdx,
-            @CookieValue String refreshToken)
+            @PathVariable String storeIdx)
             throws Exception {
-        return adminUseCase.adminStorePatch(adminStorePatchRequest, storeIdx, refreshToken);
+        return adminUseCase.adminStorePatch(adminStorePatchRequest, storeIdx);
     }
 
     @MethodInfo(name = "adminStoreDelete", description = "가게 정보를 삭제합니다.")
@@ -380,8 +376,8 @@ public class AdminRestController {
                                         schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<Void> adminStoreDelete(
-            @PathVariable String storeIdx, @CookieValue String refreshToken) throws Exception {
-        return adminUseCase.adminStoreDelete(storeIdx, refreshToken);
+            @PathVariable String storeIdx) throws Exception {
+        return adminUseCase.adminStoreDelete(storeIdx);
     }
 
     @MethodInfo(name = "adminProductsPost", description = "상품 목록을 조회합니다.")
@@ -415,9 +411,9 @@ public class AdminRestController {
                                         schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<AdminProductsPostResponse> adminProductsPost(
-            AdminProductsPostRequest adminProductsPostRequest, @CookieValue String refreshToken)
+            AdminProductsPostRequest adminProductsPostRequest)
             throws Exception {
-        return adminUseCase.adminProductsPost(adminProductsPostRequest, refreshToken);
+        return adminUseCase.adminProductsPost(adminProductsPostRequest);
     }
 
     @MethodInfo(name = "adminProductPost", description = "상품 정보를 조회합니다.")
@@ -452,10 +448,9 @@ public class AdminRestController {
             })
     public ResponseEntity<AdminProductPostResponse> adminProductPost(
             AdminProductPostRequest adminProductPostRequest,
-            @PathVariable String productIdx,
-            @CookieValue String refreshToken)
+            @PathVariable String productIdx)
             throws Exception {
-        return adminUseCase.adminProductPost(adminProductPostRequest, productIdx, refreshToken);
+        return adminUseCase.adminProductPost(adminProductPostRequest, productIdx);
     }
 
     @MethodInfo(name = "adminProductPatch", description = "상품 정보를 수정합니다.")
@@ -488,10 +483,9 @@ public class AdminRestController {
             })
     public ResponseEntity<Void> adminProductPatch(
             AdminProductPatchRequest adminProductPatchRequest,
-            @PathVariable String productIdx,
-            @CookieValue String refreshToken)
+            @PathVariable String productIdx)
             throws Exception {
-        return adminUseCase.adminProductPatch(adminProductPatchRequest, productIdx, refreshToken);
+        return adminUseCase.adminProductPatch(adminProductPatchRequest, productIdx);
     }
 
     @MethodInfo(name = "adminProductDelete", description = "상품 정보를 삭제합니다.")
@@ -523,8 +517,8 @@ public class AdminRestController {
                                         schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<Void> adminProductDelete(
-            @PathVariable String productIdx, @CookieValue String refreshToken) throws Exception {
-        return adminUseCase.adminProductDelete(productIdx, refreshToken);
+            @PathVariable String productIdx) throws Exception {
+        return adminUseCase.adminProductDelete(productIdx);
     }
 
     public AdminRestController(AdminUseCase adminUseCase) {
