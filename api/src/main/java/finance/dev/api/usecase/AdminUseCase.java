@@ -362,6 +362,7 @@ public class AdminUseCase {
                 throw new BadRequestException("존재하지 않는 아이디입니다.");
             }
 
+
             storeService.updateStore(
                     storeIdx,
                     adminStorePatchRequest.getName(),
@@ -373,7 +374,6 @@ public class AdminUseCase {
                     adminStorePatchRequest.getIsDelivery(),
                     adminStorePatchRequest.getIsPackaged()
             );
-
             return ResponseEntity.ok().build();
         }catch(BadRequestException e){
             throw new BadRequestException(e.getMessage());
@@ -499,7 +499,6 @@ public class AdminUseCase {
         try{
             String name = adminProductPatchRequest.getName();
             int price = adminProductPatchRequest.getPrice();
-
             productService.updateProduct(
                     productIdx,
                     adminProductPatchRequest.getName(),

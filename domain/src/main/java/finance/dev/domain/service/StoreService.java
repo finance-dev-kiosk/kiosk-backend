@@ -101,7 +101,6 @@ public class StoreService {
     public void updateStore(Long storeIdx, String name, String category,
                             String address1, String address2, String address3,
                             String phone, Boolean isDelivery, Boolean isPackaged) {
-
         Optional<StoreEntity> optionalStoreEntity = storeRepository.findById(storeIdx);
         StoreEntity storeEntity = optionalStoreEntity.get();
         storeEntity.setName(name);
