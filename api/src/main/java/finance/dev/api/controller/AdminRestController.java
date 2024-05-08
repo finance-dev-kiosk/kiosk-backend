@@ -343,7 +343,7 @@ public class AdminRestController {
             })
     public ResponseEntity<Void> adminStorePatch(
             AdminStorePatchRequest adminStorePatchRequest,
-            @PathVariable String storeIdx)
+            @PathVariable Long storeIdx)
             throws Exception {
         return adminUseCase.adminStorePatch(adminStorePatchRequest, storeIdx);
     }

@@ -1,6 +1,8 @@
 package finance.dev.domain.service;
 
+import finance.dev.common.annotation.TypeInfo;
 import finance.dev.domain.entity.StoreEntity;
+import finance.dev.domain.repository.jpa.StoreRepository;
 import finance.dev.domain.type.StoreSearchSort;
 import finance.dev.domain.type.StoreSearchType;
 import jakarta.persistence.EntityManager;
@@ -8,9 +10,11 @@ import jakarta.persistence.Query;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+@TypeInfo(name = "StoreService", description = "가게 서비스 클래스")
 @Service
 public class StoreService {
     private final EntityManager entityManager;
+    private final StoreRepository storeRepository;
 
     public StoreEntity getStore(Long storeId) {
         return entityManager.find(StoreEntity.class, storeId);
@@ -92,7 +96,18 @@ public class StoreService {
         return query.getResultList();
     }
 
-    public StoreService(EntityManager entityManager) {
+    public void updateStore(Long storeIdx, String name, String category,
+                             String address1,String address2,String address3,
+                            String phone,Boolean isDelivery, Boolean isPackaged){
+        StoreEntity store = storeRepository.findByIdx(storeIdx);
+       storeRepository.updateStoreEntityByIdx(store,storeIdx);
+//        storeRepository.update(storeIdx, name, category,
+//                address1,address2, address3,
+//                phone, isDelivery, isPackaged);
+    }
+
+    public StoreService(EntityManager entityManager, StoreRepository storeRepository) {
         this.entityManager = entityManager;
+        this.storeRepository = storeRepository;
     }
 }

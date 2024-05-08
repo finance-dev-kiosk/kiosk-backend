@@ -26,8 +26,11 @@ public class ProductService {
                 .createQuery(queryString.toString(), ProductEntity.class)
                 .getResultList();
     }
+    public ProductEntity getProduct(Long productId){
+        return entityManager.find(ProductEntity.class, productId);
+    }
 
-    public List<ProductEntity> getProducts(
+    public List<ProductEntity> searchProducts(
             String searchValue,
             int searchPageNum,
             int searchPageSize,
@@ -45,7 +48,7 @@ public class ProductService {
         } else if (productSearchSort == ProductSearchSort.NAME_DESC) {
             queryString.append(" ORDER BY p.name DESC");
         } else if (productSearchSort == ProductSearchSort.PRICE_ASC) {
-            queryString.append(" ORDER BY p.price Asc");
+            queryString.append(" ORDER BY p.price ASC");
         } else if (productSearchSort == ProductSearchSort.PRICE_DESC) {
             queryString.append(" ORDER BY p.price DESC");
         } else {

@@ -28,7 +28,10 @@ public class ProductEntity {
     private Long storeIdx; // 가게 식별자
 
     @Builder
-    public ProductEntity(Long idx) {
+    public ProductEntity(Long idx, String name, int price, Long storeIdx) {
         this.idx = idx;
+        this.name = name;
+        this.price = price;
+        this.storeIdx = storeIdx;
     }
 }
