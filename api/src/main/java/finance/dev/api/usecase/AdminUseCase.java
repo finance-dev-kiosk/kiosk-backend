@@ -5,9 +5,13 @@ import finance.dev.common.annotation.MethodInfo;
 import finance.dev.common.annotation.TypeInfo;
 import finance.dev.common.annotation.UseCase;
 import finance.dev.domain.entity.AdminEntity;
+import finance.dev.domain.entity.ProductEntity;
+import finance.dev.domain.entity.StoreEntity;
 import finance.dev.domain.entity.UserEntity;
 import finance.dev.domain.handler.JwtHandler;
 import finance.dev.domain.service.AdminService;
+import finance.dev.domain.service.ProductService;
+import finance.dev.domain.service.StoreService;
 import finance.dev.domain.service.UserService;
 import finance.dev.domain.type.UserSearchSort;
 import finance.dev.domain.type.UserSearchType;
@@ -15,6 +19,7 @@ import lombok.Builder;
 import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +36,8 @@ public class AdminUseCase {
     private final AdminService adminService;
     private final JwtHandler jwtHandler;
     private final UserService userService;
+    private final StoreService storeService;
+    private final ProductService productService;
 
     @MethodInfo(name = "adminLoginPost", description = "관리자 로그인을 처리합니다.")
     public ResponseEntity<AdminLoginPostResponse> adminLoginPost(
@@ -110,7 +117,7 @@ public class AdminUseCase {
             }
 
             //검색
-            List<UserEntity> userEntities =
+            List<UserEntity> searchUserEntities =
                     userService.searchUsers(
                             adminUsersPostRequest.getUserSearchType(),
                             adminUsersPostRequest.getSearchValue(),
@@ -118,6 +125,20 @@ public class AdminUseCase {
                             adminUsersPostRequest.getSearchPageSize(),
                             adminUsersPostRequest.getUserSearchSort());
 
+            List<UserEntity> userEntities;
+
+            if(searchUserEntities.size() % adminUsersPostRequest.getSearchPageSize() != 0){
+                userEntities = searchUserEntities.subList(
+                        adminUsersPostRequest.getSearchPageNum() * (adminUsersPostRequest.getSearchPageSize()-1) ,
+                        searchUserEntities.size()-1
+                );
+            } else{
+                userEntities = searchUserEntities.subList(
+                                adminUsersPostRequest.getSearchPageNum() * adminUsersPostRequest.getSearchPageSize(),
+                                adminUsersPostRequest.getSearchPageNum() * adminUsersPostRequest.getSearchPageSize()
+                                        + adminUsersPostRequest.getSearchPageSize()
+                        );
+            }
 
             //검색 값 반환
             AdminUsersPostResponse adminUsersPostResponse =
@@ -182,67 +203,251 @@ public class AdminUseCase {
 
     @MethodInfo(name = "adminUserPatch", description = "관리자 회원 수정을 처리합니다.")
     public ResponseEntity<Void> adminUserPatch(
-            AdminUserPatchRequest adminUserPatchRequest, String userIdx) {
-        return null;
+            AdminUserPatchRequest adminUserPatchRequest, Long userIdx) throws Exception {
+        try{
+            //토큰 파싱
+            String userId= jwtHandler.parseAccessToken(adminUserPatchRequest.getAccessToken());
+
+            //아이디 존재 유효성 검사
+            if(!adminService.isExistId(userId)){
+                throw new BadRequestException("존재하지 않는 아이디입니다.");
+            }
+
+            String name = adminUserPatchRequest.getName();
+            userService.updateUser(userIdx, name);
+
+            return ResponseEntity.ok().build();
+
+        }catch(BadRequestException e){
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @MethodInfo(name = "adminUserDelete", description = "관리자 회원 삭제를 처리합니다.")
-    public ResponseEntity<Void> adminUserDelete(String userIdx) {
-        return null;
+    public ResponseEntity<Void> adminUserDelete(
+            AdminUserDeleteRequest adminUserDeleteRequest,
+            Long userIdx) throws Exception{
+        try{
+            //토큰 파싱
+            String userId= jwtHandler.parseAccessToken(adminUserDeleteRequest.getAccessToken());
+
+            //아이디 존재 유효성 검사
+            if(!adminService.isExistId(userId)){
+                throw new BadRequestException("존재하지 않는 아이디입니다.");
+            }
+            userService.deleteUser(userIdx);
+
+            return ResponseEntity.ok().build();
+        } catch (BadRequestException e) {
+            throw new BadRequestException(e.getMessage());
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @MethodInfo(name = "adminStoresPost", description = "관리자 가게 목록 조회를 처리합니다.")
     public ResponseEntity<AdminStoresPostResponse> adminStoresPost(
-            AdminStoresPostRequest adminStoresPostRequest) {
-        return null;
+            AdminStoresPostRequest adminStoresPostRequest)  throws Exception {
+        try{
+            //토큰 파싱
+            String userId= jwtHandler.parseAccessToken(adminStoresPostRequest.getAccessToken());
+
+            //아이디 존재 유효성 검사
+            if(!adminService.isExistId(userId)){
+                throw new BadRequestException("존재하지 않는 아이디입니다.");
+            }
+
+            //검색 값 유효성 검사
+            if(adminStoresPostRequest.getSearchValue() == null){
+                throw new BadRequestException("검색값이 없습니다.");
+            }
+
+            //검색
+            List<StoreEntity> storeEntities =
+                    storeService.getStoresList(
+                            adminStoresPostRequest.getSearchValue(),
+                            adminStoresPostRequest.getSearchPageNum(),
+                            adminStoresPostRequest.getSearchPageSize(),
+                            adminStoresPostRequest.getStoreSearchSort(),
+                            adminStoresPostRequest.getStoreSearchType());
+
+            //검색 값 반환
+            AdminStoresPostResponse adminStoresPostResponse =
+                    AdminStoresPostResponse.builder()
+                            .storeCount(storeEntities.size())
+                            .pageCount(
+                                    storeEntities.size()
+                                            / adminStoresPostRequest.getSearchPageSize())
+                            .stores(
+                                    storeEntities.stream()
+                                            .map(
+                                                    storeEntity ->
+                                                            AdminStorePost.builder()
+                                                                    .idx(storeEntity.getIdx())
+                                                                    .name(storeEntity.getName())
+                                                                    .category(storeEntity.getCategory())
+                                                                    .build())
+                                            .collect(Collectors.toCollection(ArrayList::new)))
+                            .build();
+            return ResponseEntity.ok().body(adminStoresPostResponse);
+        }catch(BadRequestException e){
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @MethodInfo(name = "adminStorePost", description = "관리자 가게 조회를 처리합니다.")
     public ResponseEntity<AdminStorePostResponse> adminStorePost(
-            AdminStorePostRequest adminStorePostRequest, String storeIdx) {
-        return null;
+            AdminStorePostRequest adminStorePostRequest, Long storeIdx)  throws Exception {
+        try{
+            //토큰 파싱
+            String userId= jwtHandler.parseAccessToken(adminStorePostRequest.getAccessToken());
+
+            //아이디 존재 유효성 검사
+            if(!adminService.isExistId(userId)){
+                throw new BadRequestException("존재하지 않는 아이디입니다.");
+            }
+
+            StoreEntity storeEntity = storeService.getStore(storeIdx);
+
+            if (storeEntity == null) {
+                throw new BadRequestException("존재하지 않는 가게입니다.");
+            }
+
+            return ResponseEntity.ok(
+                    AdminStorePostResponse.builder()
+                            .idx(storeEntity.getIdx())
+                            .name(storeEntity.getName())
+                            .category(storeEntity.getCategory())
+                            .phone(storeEntity.getTel())
+                            .isDelivery(storeEntity.getIsDelivery())
+                            .isPackaged(storeEntity.getIsPackaged())
+                            .build());
+        } catch(BadRequestException e){
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @MethodInfo(name = "adminStorePatch", description = "관리자 가게 수정을 처리합니다.")
     public ResponseEntity<Void> adminStorePatch(
-            AdminStorePatchRequest adminStorePatchRequest, String storeIdx) {
+            AdminStorePatchRequest adminStorePatchRequest, String storeIdx) throws Exception{
         return null;
     }
 
     @MethodInfo(name = "adminStoreDelete", description = "관리자 가게 삭제를 처리합니다.")
-    public ResponseEntity<Void> adminStoreDelete(String storeIdx) {
+    public ResponseEntity<Void> adminStoreDelete(String storeIdx)  throws Exception {
         return null;
     }
 
     @MethodInfo(name = "adminProductsPost", description = "관리자 상품 목록 조회를 처리합니다.")
     public ResponseEntity<AdminProductsPostResponse> adminProductsPost(
-            AdminProductsPostRequest adminProductsPostRequest) {
-        return null;
+            AdminProductsPostRequest adminProductsPostRequest)  throws Exception {
+        try{
+            //토큰 파싱
+            String userId= jwtHandler.parseAccessToken(adminProductsPostRequest.getAccessToken());
+
+            //아이디 존재 유효성 검사
+            if(!adminService.isExistId(userId)){
+                throw new BadRequestException("존재하지 않는 아이디입니다.");
+            }
+
+            //검색 값 유효성 검사
+            if(adminProductsPostRequest.getSearchValue() == null){
+                throw new BadRequestException("검색값이 없습니다.");
+            }
+
+            //검색
+            List<ProductEntity> productEntities =
+                    productService.getProducts(
+                            adminProductsPostRequest.getSearchValue(),
+                            adminProductsPostRequest.getSearchPageNum(),
+                            adminProductsPostRequest.getSearchPageSize(),
+                            adminProductsPostRequest.getProductSearchSort());
+
+            //검색 값 반환
+            AdminProductsPostResponse adminProductsPostResponse =
+                    AdminProductsPostResponse.builder()
+                            .productCount(productEntities.size())
+                            .pageCount(
+                                    productEntities.size()
+                                            / adminProductsPostRequest.getSearchPageSize())
+                            .products(
+                                    productEntities.stream()
+                                            .map(
+                                                    productEntity ->
+                                                            AdminProductPost.builder()
+                                                                    .idx(productEntity.getIdx())
+                                                                    .name(productEntity.getName())
+                                                                    .price(productEntity.getPrice())
+                                                                    .build())
+                                            .collect(Collectors.toCollection(ArrayList::new)))
+                            .build();
+            return ResponseEntity.ok().body(adminProductsPostResponse);
+        }catch(BadRequestException e){
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @MethodInfo(name = "adminProductPost", description = "관리자 상품 조회를 처리합니다.")
     public ResponseEntity<AdminProductPostResponse> adminProductPost(
             AdminProductPostRequest adminProductPostRequest,
-            String productIdx) {
+            Long productIdx)  throws Exception {
         return null;
+//        try{
+//            //토큰 파싱
+//            String userId= jwtHandler.parseAccessToken(adminProductPostRequest.getAccessToken());
+//
+//            //아이디 존재 유효성 검사
+//            if(!adminService.isExistId(userId)){
+//                throw new BadRequestException("존재하지 않는 아이디입니다.");
+//            }
+//
+//            List<ProductEntity> productEntity = productService.getStoreProducts(productIdx);
+//
+//            if (productEntity == null) {
+//                throw new BadRequestException("존재하지 않는 가게입니다.");
+//            }
+//
+//            return ResponseEntity.ok(
+//                    AdminProductPostResponse.builder()
+//                            .idx(productEntity.getIdx())
+//                            .name(productEntity.getName())
+//                            .price(productEntity.getPrice())
+//                            .build());
+//        } catch(BadRequestException e){
+//            throw new BadRequestException(e.getMessage());
+//        } catch (Exception e){
+//            throw new Exception(e.getMessage());
+//        }
     }
 
     @MethodInfo(name = "adminProductPatch", description = "관리자 상품 수정을 처리합니다.")
     public ResponseEntity<Void> adminProductPatch(
             AdminProductPatchRequest adminProductPatchRequest,
-            String productIdx) {
+            String productIdx)  throws Exception {
         return null;
     }
 
     @MethodInfo(name = "adminProductDelete", description = "관리자 상품 삭제를 처리합니다.")
-    public ResponseEntity<Void> adminProductDelete(String productIdx) {
+    public ResponseEntity<Void> adminProductDelete(String productIdx)  throws Exception {
         return null;
     }
 
     @Builder
-    public AdminUseCase(AdminService adminService, JwtHandler jwtHandler, UserService userService) {
+    public AdminUseCase(AdminService adminService, JwtHandler jwtHandler, UserService userService, StoreService storeService, @Qualifier("productService") ProductService productService) {
         this.adminService = adminService;
         this.jwtHandler = jwtHandler;
         this.userService = userService;
+        this.storeService = storeService;
+        this.productService = productService;
     }
 }

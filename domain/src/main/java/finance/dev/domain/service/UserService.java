@@ -1,13 +1,18 @@
 package finance.dev.domain.service;
 
 import finance.dev.common.annotation.TypeInfo;
+import finance.dev.domain.entity.StoreEntity;
 import finance.dev.domain.entity.UserEntity;
 import finance.dev.domain.repository.jpa.UserRepository;
+import finance.dev.domain.type.StoreSearchSort;
+import finance.dev.domain.type.StoreSearchType;
 import finance.dev.domain.type.UserSearchSort;
 import finance.dev.domain.type.UserSearchType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import java.util.List;
+
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 @TypeInfo(name = "UserService", description = "회원 서비스 클래스")
@@ -15,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
     private final EntityManager entityManager;
+    private final UserEntity userEntity;
 
     public boolean login(String userId, String password) {
         return userRepository.findByIdAndPassword(userId, password) != null;
@@ -47,6 +53,19 @@ public class UserService {
     public void register(String userId, String password, String name, String email) {
         userRepository.save(
                 UserEntity.builder().id(userId).password(password).name(name).email(email).build());
+    }
+
+    public void updateUser(Long userIdx, String name){
+        userRepository.update(userIdx, name);
+    }
+
+    public void deleteUser(Long userIdx){
+//        userRepository.deleteByIdx(userIdx);
+        userRepository.deleteById(userIdx);
+    }
+
+    public UserEntity getUser(Long userIdx){
+        return entityManager.find(UserEntity.class, userIdx);
     }
 
     //admin에서 search
@@ -92,16 +111,15 @@ public class UserService {
         } else {
             queryString.append(" ORDER BY u.id ASC");
         }
+
         Query query = entityManager.createQuery(queryString.toString());
 
         return query.getResultList();
     }
-    public UserEntity getUser(Long userIdx){
-        return entityManager.find(UserEntity.class, userIdx);
-    }
-  
-    public UserService(UserRepository userRepository, EntityManager entityManager) {
+
+    public UserService(UserRepository userRepository, EntityManager entityManager, UserEntity userEntity) {
         this.userRepository = userRepository;
         this.entityManager = entityManager;
+        this.userEntity = userEntity;
     }
 }

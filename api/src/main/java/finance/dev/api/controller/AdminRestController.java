@@ -201,7 +201,7 @@ public class AdminRestController {
             })
     public ResponseEntity<Void> adminUserPatch(
             AdminUserPatchRequest adminUserPatchRequest,
-            @PathVariable String userIdx)
+            @PathVariable Long userIdx)
             throws Exception {
         return adminUseCase.adminUserPatch(adminUserPatchRequest, userIdx);
     }
@@ -235,8 +235,9 @@ public class AdminRestController {
                                     schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<Void> adminUserDelete(
-            @PathVariable String userIdx) throws Exception {
-        return adminUseCase.adminUserDelete(userIdx);
+            AdminUserDeleteRequest adminUserDeleteRequest,
+            @PathVariable Long userIdx) throws Exception {
+        return adminUseCase.adminUserDelete(adminUserDeleteRequest,userIdx);
     }
 
     @MethodInfo(name = "adminStoresPost", description = "가게 목록을 조회합니다.")
@@ -307,7 +308,7 @@ public class AdminRestController {
             })
     public ResponseEntity<AdminStorePostResponse> adminStorePost(
             AdminStorePostRequest adminStorePostRequest,
-            @PathVariable String storeIdx)
+            @PathVariable Long storeIdx)
             throws Exception {
         return adminUseCase.adminStorePost(adminStorePostRequest, storeIdx);
     }
@@ -448,7 +449,7 @@ public class AdminRestController {
             })
     public ResponseEntity<AdminProductPostResponse> adminProductPost(
             AdminProductPostRequest adminProductPostRequest,
-            @PathVariable String productIdx)
+            @PathVariable Long productIdx)
             throws Exception {
         return adminUseCase.adminProductPost(adminProductPostRequest, productIdx);
     }

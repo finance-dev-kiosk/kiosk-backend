@@ -1,5 +1,6 @@
 package finance.dev.api.dto.admin;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -12,6 +13,7 @@ public class AdminStorePostResponse {
     private Boolean isDelivery; // 배달 가능 여부
     private Boolean isPackaged; // 포장 가능 여부
 
+    @Builder
     public AdminStorePostResponse(
             Long idx,
             String name,
