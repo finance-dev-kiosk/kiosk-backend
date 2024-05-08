@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class AdminProductPatchRequest {
     private String name;
-    private String price;
+    private int price;
 
-    public AdminProductPatchRequest(String name, String price) {
+    public AdminProductPatchRequest(String name, int price) {
         this.name = name;
         this.price = price;
     }

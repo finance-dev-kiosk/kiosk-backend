@@ -60,7 +60,6 @@ public class UserService {
     }
 
     public void deleteUser(Long userIdx){
-//        userRepository.deleteByIdx(userIdx);
         userRepository.deleteById(userIdx);
     }
 
