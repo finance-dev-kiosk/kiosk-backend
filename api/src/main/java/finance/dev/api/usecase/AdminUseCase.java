@@ -383,8 +383,15 @@ public class AdminUseCase {
     }
 
     @MethodInfo(name = "adminStoreDelete", description = "관리자 가게 삭제를 처리합니다.")
-    public ResponseEntity<Void> adminStoreDelete(String storeIdx)  throws Exception {
-        return null;
+    public ResponseEntity<Void> adminStoreDelete(Long storeIdx)  throws Exception {
+        try{
+            storeService.deleteStore(storeIdx);
+            return ResponseEntity.ok().build();
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @MethodInfo(name = "adminProductsPost", description = "관리자 상품 목록 조회를 처리합니다.")
@@ -488,13 +495,29 @@ public class AdminUseCase {
     @MethodInfo(name = "adminProductPatch", description = "관리자 상품 수정을 처리합니다.")
     public ResponseEntity<Void> adminProductPatch(
             AdminProductPatchRequest adminProductPatchRequest,
-            String productIdx)  throws Exception {
-        return null;
+            Long productIdx)  throws Exception {
+        try{
+            String name = adminProductPatchRequest.getName();
+            int price = adminProductPatchRequest.getPrice();
+            productService.updateProduct(productIdx, name, price);
+
+            return ResponseEntity.ok().build();
+
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @MethodInfo(name = "adminProductDelete", description = "관리자 상품 삭제를 처리합니다.")
-    public ResponseEntity<Void> adminProductDelete(String productIdx)  throws Exception {
-        return null;
+    public ResponseEntity<Void> adminProductDelete(Long productIdx)  throws Exception {
+        try{
+            productService.deleteProduct(productIdx);
+            return ResponseEntity.ok().build();
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @Builder

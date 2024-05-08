@@ -3,6 +3,7 @@ package finance.dev.domain.service;
 import finance.dev.common.annotation.TypeInfo;
 import finance.dev.domain.entity.ProductEntity;
 import finance.dev.domain.entity.StoreEntity;
+import finance.dev.domain.repository.jpa.ProductRepository;
 import finance.dev.domain.type.ProductSearchSort;
 import finance.dev.domain.type.StoreSearchSort;
 import finance.dev.domain.type.StoreSearchType;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductService {
     private final EntityManager entityManager;
+    private final ProductRepository productRepository;
 
     public List<ProductEntity> getStoreProducts(Long storeId) {
         StringBuilder queryString =
@@ -28,6 +30,14 @@ public class ProductService {
     }
     public ProductEntity getProduct(Long productId){
         return entityManager.find(ProductEntity.class, productId);
+    }
+
+    public void updateProduct(Long productIdx, String name, int price){
+        productRepository.update(productIdx, name, price);
+    }
+
+    public void deleteProduct(Long productIdx){
+        productRepository.deleteById(productIdx);
     }
 
     public List<ProductEntity> searchProducts(
@@ -61,7 +71,8 @@ public class ProductService {
     }
 
 
-    public ProductService(EntityManager entityManager) {
+    public ProductService(EntityManager entityManager, ProductRepository productRepository) {
         this.entityManager = entityManager;
+        this.productRepository = productRepository;
     }
 }

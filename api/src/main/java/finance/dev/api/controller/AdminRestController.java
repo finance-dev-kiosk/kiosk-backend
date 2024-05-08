@@ -377,7 +377,7 @@ public class AdminRestController {
                                     schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<Void> adminStoreDelete(
-            @PathVariable String storeIdx) throws Exception {
+            @PathVariable Long storeIdx) throws Exception {
         return adminUseCase.adminStoreDelete(storeIdx);
     }
 
@@ -484,7 +484,7 @@ public class AdminRestController {
             })
     public ResponseEntity<Void> adminProductPatch(
             AdminProductPatchRequest adminProductPatchRequest,
-            @PathVariable String productIdx)
+            @PathVariable Long productIdx)
             throws Exception {
         return adminUseCase.adminProductPatch(adminProductPatchRequest, productIdx);
     }
@@ -518,7 +518,7 @@ public class AdminRestController {
                                     schema = @Schema(implementation = ExceptionResponse.class)))
             })
     public ResponseEntity<Void> adminProductDelete(
-            @PathVariable String productIdx) throws Exception {
+            @PathVariable Long productIdx) throws Exception {
         return adminUseCase.adminProductDelete(productIdx);
     }
 

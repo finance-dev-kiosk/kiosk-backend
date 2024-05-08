@@ -106,6 +106,10 @@ public class StoreService {
 //                phone, isDelivery, isPackaged);
     }
 
+    public void deleteStore(Long storeIdx){
+        storeRepository.deleteById(storeIdx);
+    }
+
     public StoreService(EntityManager entityManager, StoreRepository storeRepository) {
         this.entityManager = entityManager;
         this.storeRepository = storeRepository;

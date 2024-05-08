@@ -32,5 +32,4 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
                         .build()
         );
     }
-    void deleteByIdx(Long userIdx);
 }

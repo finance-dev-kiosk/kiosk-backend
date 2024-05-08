@@ -7,4 +7,17 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @TypeInfo(name = "ProductRepository", description = "상품 레포지토리 인터페이스")
 @EnableJpaRepositories
-public interface ProductRepository extends JpaRepository<ProductEntity, Long> {}
+public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
+    ProductEntity findByIdx(Long productIdx);
+
+    default void update(Long idx, String name, int price) {
+        ProductEntity product = findByIdx(idx);
+        save(
+                ProductEntity.builder()
+                        .idx(product.getIdx())
+                        .name(name)
+                        .price(price)
+                        .build()
+        );
+    }
+}
