@@ -499,7 +499,12 @@ public class AdminUseCase {
         try{
             String name = adminProductPatchRequest.getName();
             int price = adminProductPatchRequest.getPrice();
-            productService.updateProduct(productIdx, name, price);
+
+            productService.updateProduct(
+                    productIdx,
+                    adminProductPatchRequest.getName(),
+                    adminProductPatchRequest.getPrice()
+            );
 
             return ResponseEntity.ok().build();
 

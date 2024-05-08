@@ -2,15 +2,13 @@ package finance.dev.domain.entity;
 
 import finance.dev.common.annotation.TypeInfo;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @TypeInfo(name = "ProductEntity", description = "상품 엔티티 클래스")
 @Table(name = "tbl_product")
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductEntity {
     @Id
