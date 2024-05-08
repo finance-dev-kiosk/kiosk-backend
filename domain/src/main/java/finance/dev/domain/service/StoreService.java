@@ -8,6 +8,9 @@ import finance.dev.domain.type.StoreSearchType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 @TypeInfo(name = "StoreService", description = "가게 서비스 클래스")
@@ -96,15 +99,22 @@ public class StoreService {
         return query.getResultList();
     }
 
-    public void updateStore(Long storeIdx, String name, String category,
-                             String address1,String address2,String address3,
-                            String phone,Boolean isDelivery, Boolean isPackaged){
-        StoreEntity store = storeRepository.findByIdx(storeIdx);
-       storeRepository.updateStoreEntityByIdx(store,storeIdx);
-//        storeRepository.update(storeIdx, name, category,
-//                address1,address2, address3,
-//                phone, isDelivery, isPackaged);
+        public void updateStore(Long storeIdx, String name, String category,
+                             String address1, String address2, String address3,
+                             String phone, Boolean isDelivery, Boolean isPackaged) {
+        Optional<StoreEntity> optionalStoreEntity = storeRepository.findById(storeIdx);
+        StoreEntity storeEntity = optionalStoreEntity.get();
+        storeEntity.setName(name);
+        storeEntity.setCategory(category);
+        storeEntity.setAddress1(address1);
+        storeEntity.setAddress2(address2);
+        storeEntity.setAddress3(address3);
+        storeEntity.setTel(phone);
+        storeEntity.setIsDelivery(isDelivery);
+        storeEntity.setIsPackaged(isPackaged);
+        storeRepository.save(storeEntity);
     }
+
 
     public void deleteStore(Long storeIdx){
         storeRepository.deleteById(storeIdx);

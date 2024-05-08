@@ -3,15 +3,14 @@ package finance.dev.domain.entity;
 import finance.dev.common.annotation.TypeInfo;
 import jakarta.persistence.*;
 import java.util.List;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 @TypeInfo(name = "StoreEntity", description = "가게 엔티티 클래스")
 @Table(name = "tbl_store")
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StoreEntity {
     @Id
