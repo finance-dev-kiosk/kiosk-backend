@@ -352,8 +352,34 @@ public class AdminUseCase {
 
     @MethodInfo(name = "adminStorePatch", description = "관리자 가게 수정을 처리합니다.")
     public ResponseEntity<Void> adminStorePatch(
-            AdminStorePatchRequest adminStorePatchRequest, String storeIdx) throws Exception{
-        return null;
+            AdminStorePatchRequest adminStorePatchRequest, Long storeIdx) throws Exception{
+        try{
+            //토큰 파싱
+            String userId= jwtHandler.parseAccessToken(adminStorePatchRequest.getAccessToken());
+
+            //아이디 존재 유효성 검사
+            if(!adminService.isExistId(userId)){
+                throw new BadRequestException("존재하지 않는 아이디입니다.");
+            }
+
+            String name = adminStorePatchRequest.getName();
+            String category = adminStorePatchRequest.getCategory();
+            String address1 = adminStorePatchRequest.getAddress1();
+            String address2 = adminStorePatchRequest.getAddress2();
+            String address3 = adminStorePatchRequest.getAddress3();
+            String phone = adminStorePatchRequest.getPhone();
+            Boolean isDelivery = adminStorePatchRequest.getIsDelivery();
+            Boolean isPackaged = adminStorePatchRequest.getIsPackaged();
+            storeService.updateStore(storeIdx, name, category,
+                    address1, address2, address3,
+                    phone, isDelivery, isPackaged);
+            return ResponseEntity.ok().build();
+
+        }catch(BadRequestException e){
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @MethodInfo(name = "adminStoreDelete", description = "관리자 가게 삭제를 처리합니다.")
@@ -380,7 +406,7 @@ public class AdminUseCase {
 
             //검색
             List<ProductEntity> searchProductEntities =
-                    productService.getProducts(
+                    productService.searchProducts(
                             adminProductsPostRequest.getSearchValue(),
                             adminProductsPostRequest.getSearchPageNum(),
                             adminProductsPostRequest.getSearchPageSize(),
@@ -431,33 +457,32 @@ public class AdminUseCase {
     public ResponseEntity<AdminProductPostResponse> adminProductPost(
             AdminProductPostRequest adminProductPostRequest,
             Long productIdx)  throws Exception {
-        return null;
-//        try{
-//            //토큰 파싱
-//            String userId= jwtHandler.parseAccessToken(adminProductPostRequest.getAccessToken());
-//
-//            //아이디 존재 유효성 검사
-//            if(!adminService.isExistId(userId)){
-//                throw new BadRequestException("존재하지 않는 아이디입니다.");
-//            }
-//
-//            List<ProductEntity> productEntity = productService.getStoreProducts(productIdx);
-//
-//            if (productEntity == null) {
-//                throw new BadRequestException("존재하지 않는 가게입니다.");
-//            }
-//
-//            return ResponseEntity.ok(
-//                    AdminProductPostResponse.builder()
-//                            .idx(productEntity.getIdx())
-//                            .name(productEntity.getName())
-//                            .price(productEntity.getPrice())
-//                            .build());
-//        } catch(BadRequestException e){
-//            throw new BadRequestException(e.getMessage());
-//        } catch (Exception e){
-//            throw new Exception(e.getMessage());
-//        }
+        try{
+            //토큰 파싱
+            String userId= jwtHandler.parseAccessToken(adminProductPostRequest.getAccessToken());
+
+            //아이디 존재 유효성 검사
+            if(!adminService.isExistId(userId)){
+                throw new BadRequestException("존재하지 않는 아이디입니다.");
+            }
+
+            ProductEntity productEntity = productService.getProduct(productIdx);
+
+            if (productEntity == null) {
+                throw new BadRequestException("존재하지 않는 가게입니다.");
+            }
+
+            return ResponseEntity.ok(
+                    AdminProductPostResponse.builder()
+                            .idx(productEntity.getIdx())
+                            .name(productEntity.getName())
+                            .price(productEntity.getPrice())
+                            .build());
+        } catch(BadRequestException e){
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
     @MethodInfo(name = "adminProductPatch", description = "관리자 상품 수정을 처리합니다.")

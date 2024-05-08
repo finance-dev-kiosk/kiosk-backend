@@ -61,6 +61,7 @@ public class StoreEntity {
 
     @Builder
     public StoreEntity(
+            Long idx,
             String name,
             String tel,
             String address1,
@@ -69,6 +70,7 @@ public class StoreEntity {
             String category,
             Boolean isPackaged,
             Boolean isDelivery) {
+        this.idx = idx;
         this.name = name;
         this.tel = tel;
         this.address1 = address1;
