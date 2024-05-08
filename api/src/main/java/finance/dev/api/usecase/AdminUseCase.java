@@ -267,13 +267,28 @@ public class AdminUseCase {
             }
 
             //검색
-            List<StoreEntity> storeEntities =
+            List<StoreEntity> searchStoreEntities =
                     storeService.getStoresList(
                             adminStoresPostRequest.getSearchValue(),
                             adminStoresPostRequest.getSearchPageNum(),
                             adminStoresPostRequest.getSearchPageSize(),
                             adminStoresPostRequest.getStoreSearchSort(),
                             adminStoresPostRequest.getStoreSearchType());
+
+            List<StoreEntity> storeEntities;
+
+            if(searchStoreEntities.size() % adminStoresPostRequest.getSearchPageSize() != 0){
+                storeEntities = searchStoreEntities.subList(
+                        adminStoresPostRequest.getSearchPageNum() * (adminStoresPostRequest.getSearchPageSize()-1) ,
+                        searchStoreEntities.size()-1
+                );
+            } else{
+                storeEntities = searchStoreEntities.subList(
+                        adminStoresPostRequest.getSearchPageNum() * adminStoresPostRequest.getSearchPageSize(),
+                        adminStoresPostRequest.getSearchPageNum() * adminStoresPostRequest.getSearchPageSize()
+                                + adminStoresPostRequest.getSearchPageSize()
+                );
+            }
 
             //검색 값 반환
             AdminStoresPostResponse adminStoresPostResponse =
