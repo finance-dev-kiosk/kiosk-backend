@@ -98,10 +98,10 @@ public class StoreService {
 
         return query.getResultList();
     }
+    public void updateStore(Long storeIdx, String name, String category,
+                            String address1, String address2, String address3,
+                            String phone, Boolean isDelivery, Boolean isPackaged) {
 
-        public void updateStore(Long storeIdx, String name, String category,
-                             String address1, String address2, String address3,
-                             String phone, Boolean isDelivery, Boolean isPackaged) {
         Optional<StoreEntity> optionalStoreEntity = storeRepository.findById(storeIdx);
         StoreEntity storeEntity = optionalStoreEntity.get();
         storeEntity.setName(name);
@@ -114,7 +114,6 @@ public class StoreService {
         storeEntity.setIsPackaged(isPackaged);
         storeRepository.save(storeEntity);
     }
-
 
     public void deleteStore(Long storeIdx){
         storeRepository.deleteById(storeIdx);
