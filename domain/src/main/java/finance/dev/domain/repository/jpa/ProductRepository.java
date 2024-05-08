@@ -9,15 +9,4 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     ProductEntity findByIdx(Long productIdx);
-
-    default void update(Long idx, String name, int price) {
-        ProductEntity product = findByIdx(idx);
-        save(
-                ProductEntity.builder()
-                        .idx(product.getIdx())
-                        .name(name)
-                        .price(price)
-                        .build()
-        );
-    }
 }

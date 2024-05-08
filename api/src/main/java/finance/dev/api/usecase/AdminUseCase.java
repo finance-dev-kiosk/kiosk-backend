@@ -362,19 +362,19 @@ public class AdminUseCase {
                 throw new BadRequestException("존재하지 않는 아이디입니다.");
             }
 
-            String name = adminStorePatchRequest.getName();
-            String category = adminStorePatchRequest.getCategory();
-            String address1 = adminStorePatchRequest.getAddress1();
-            String address2 = adminStorePatchRequest.getAddress2();
-            String address3 = adminStorePatchRequest.getAddress3();
-            String phone = adminStorePatchRequest.getPhone();
-            Boolean isDelivery = adminStorePatchRequest.getIsDelivery();
-            Boolean isPackaged = adminStorePatchRequest.getIsPackaged();
-            storeService.updateStore(storeIdx, name, category,
-                    address1, address2, address3,
-                    phone, isDelivery, isPackaged);
-            return ResponseEntity.ok().build();
 
+            storeService.updateStore(
+                    storeIdx,
+                    adminStorePatchRequest.getName(),
+                    adminStorePatchRequest.getCategory(),
+                    adminStorePatchRequest.getAddress1(),
+                    adminStorePatchRequest.getAddress2(),
+                    adminStorePatchRequest.getAddress3(),
+                    adminStorePatchRequest.getPhone(),
+                    adminStorePatchRequest.getIsDelivery(),
+                    adminStorePatchRequest.getIsPackaged()
+            );
+            return ResponseEntity.ok().build();
         }catch(BadRequestException e){
             throw new BadRequestException(e.getMessage());
         } catch (Exception e){
@@ -499,7 +499,11 @@ public class AdminUseCase {
         try{
             String name = adminProductPatchRequest.getName();
             int price = adminProductPatchRequest.getPrice();
-            productService.updateProduct(productIdx, name, price);
+            productService.updateProduct(
+                    productIdx,
+                    adminProductPatchRequest.getName(),
+                    adminProductPatchRequest.getPrice()
+            );
 
             return ResponseEntity.ok().build();
 

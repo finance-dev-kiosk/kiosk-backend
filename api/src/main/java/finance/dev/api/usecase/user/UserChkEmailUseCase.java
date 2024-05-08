@@ -45,7 +45,7 @@ public class UserChkEmailUseCase {
                             + System.getenv("SERVER_URL")
                             + ":"
                             + System.getenv("SERVER_PORT")
-                            + "/user/auth?email="
+                            + "/auth?email="
                             + userChkEmailPostRequest.getEmail()
                             + "&key="
                             + authKey

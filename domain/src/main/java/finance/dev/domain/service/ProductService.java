@@ -9,6 +9,7 @@ import finance.dev.domain.type.StoreSearchSort;
 import finance.dev.domain.type.StoreSearchType;
 import jakarta.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.persistence.Query;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,11 @@ public class ProductService {
     }
 
     public void updateProduct(Long productIdx, String name, int price){
-        productRepository.update(productIdx, name, price);
+        Optional<ProductEntity> optionalStoreEntity = productRepository.findById(productIdx);
+        ProductEntity productEntity = optionalStoreEntity.get();
+        productEntity.setName(name);
+        productEntity.setPrice(price);
+        productRepository.save(productEntity);
     }
 
     public void deleteProduct(Long productIdx){
