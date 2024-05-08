@@ -111,6 +111,7 @@ public class UserService {
         } else {
             queryString.append(" ORDER BY u.id ASC");
         }
+
         Query query = entityManager.createQuery(queryString.toString());
 
         return query.getResultList();

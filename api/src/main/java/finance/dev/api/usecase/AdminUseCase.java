@@ -117,13 +117,28 @@ public class AdminUseCase {
             }
 
             //검색
-            List<UserEntity> userEntities =
+            List<UserEntity> searchUserEntities =
                     userService.searchUsers(
                             adminUsersPostRequest.getUserSearchType(),
                             adminUsersPostRequest.getSearchValue(),
                             adminUsersPostRequest.getSearchPageNum(),
                             adminUsersPostRequest.getSearchPageSize(),
                             adminUsersPostRequest.getUserSearchSort());
+
+            List<UserEntity> userEntities;
+
+            if(searchUserEntities.size() % adminUsersPostRequest.getSearchPageSize() != 0){
+                userEntities = searchUserEntities.subList(
+                        adminUsersPostRequest.getSearchPageNum() * (adminUsersPostRequest.getSearchPageSize()-1) ,
+                        searchUserEntities.size()-1
+                );
+            } else{
+                userEntities = searchUserEntities.subList(
+                                adminUsersPostRequest.getSearchPageNum() * adminUsersPostRequest.getSearchPageSize(),
+                                adminUsersPostRequest.getSearchPageNum() * adminUsersPostRequest.getSearchPageSize()
+                                        + adminUsersPostRequest.getSearchPageSize()
+                        );
+            }
 
             //검색 값 반환
             AdminUsersPostResponse adminUsersPostResponse =
@@ -385,8 +400,34 @@ public class AdminUseCase {
     @MethodInfo(name = "adminProductPost", description = "관리자 상품 조회를 처리합니다.")
     public ResponseEntity<AdminProductPostResponse> adminProductPost(
             AdminProductPostRequest adminProductPostRequest,
-            String productIdx)  throws Exception {
+            Long productIdx)  throws Exception {
         return null;
+//        try{
+//            //토큰 파싱
+//            String userId= jwtHandler.parseAccessToken(adminProductPostRequest.getAccessToken());
+//
+//            //아이디 존재 유효성 검사
+//            if(!adminService.isExistId(userId)){
+//                throw new BadRequestException("존재하지 않는 아이디입니다.");
+//            }
+//
+//            List<ProductEntity> productEntity = productService.getStoreProducts(productIdx);
+//
+//            if (productEntity == null) {
+//                throw new BadRequestException("존재하지 않는 가게입니다.");
+//            }
+//
+//            return ResponseEntity.ok(
+//                    AdminProductPostResponse.builder()
+//                            .idx(productEntity.getIdx())
+//                            .name(productEntity.getName())
+//                            .price(productEntity.getPrice())
+//                            .build());
+//        } catch(BadRequestException e){
+//            throw new BadRequestException(e.getMessage());
+//        } catch (Exception e){
+//            throw new Exception(e.getMessage());
+//        }
     }
 
     @MethodInfo(name = "adminProductPatch", description = "관리자 상품 수정을 처리합니다.")
