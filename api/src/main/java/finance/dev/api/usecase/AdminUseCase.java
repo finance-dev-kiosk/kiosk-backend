@@ -379,12 +379,27 @@ public class AdminUseCase {
             }
 
             //검색
-            List<ProductEntity> productEntities =
+            List<ProductEntity> searchProductEntities =
                     productService.getProducts(
                             adminProductsPostRequest.getSearchValue(),
                             adminProductsPostRequest.getSearchPageNum(),
                             adminProductsPostRequest.getSearchPageSize(),
                             adminProductsPostRequest.getProductSearchSort());
+
+            List<ProductEntity> productEntities;
+
+            if(searchProductEntities.size() % adminProductsPostRequest.getSearchPageSize() != 0){
+                productEntities = searchProductEntities.subList(
+                        adminProductsPostRequest.getSearchPageNum() * (adminProductsPostRequest.getSearchPageSize()-1) ,
+                        searchProductEntities.size()-1
+                );
+            } else{
+                productEntities = searchProductEntities.subList(
+                        adminProductsPostRequest.getSearchPageNum() * adminProductsPostRequest.getSearchPageSize(),
+                        adminProductsPostRequest.getSearchPageNum() * adminProductsPostRequest.getSearchPageSize()
+                                + adminProductsPostRequest.getSearchPageSize()
+                );
+            }
 
             //검색 값 반환
             AdminProductsPostResponse adminProductsPostResponse =
