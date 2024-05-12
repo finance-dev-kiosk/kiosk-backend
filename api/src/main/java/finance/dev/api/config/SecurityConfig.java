@@ -7,6 +7,7 @@ import finance.dev.common.annotation.TypeInfo;
 import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -14,6 +15,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Collections;
 
 @TypeInfo(name = "SecurityConfig", description = "스프링 시큐리티 설정 클래스")
 @Configuration
@@ -24,7 +28,19 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(corsCustomize -> corsCustomize.configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowCredentials(true);
+                    config.setAllowedOriginPatterns(Collections.singletonList("*"));
+                    config.addAllowedMethod(HttpMethod.OPTIONS);
+                    config.addAllowedMethod(HttpMethod.GET);
+                    config.addAllowedMethod(HttpMethod.POST);
+                    config.addAllowedMethod(HttpMethod.PUT);
+                    config.addAllowedMethod(HttpMethod.DELETE);
+                    config.addAllowedHeader("Content-Type");
+                    config.setMaxAge(3600L);
+                    return config;
+                }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(
                         (sessionManagement) ->

@@ -413,11 +413,11 @@ public class UserRestController {
     }
 
     @MethodInfo(name = "userStoreCommentPut", description = "사용자 가게 댓글을 수정합니다.")
-    @PatchMapping("/stores/{storeId}/comments/{commentId}/update")
+    @PostMapping("/stores/{storeId}/comments/{commentId}/update")
     @Operation(
             summary = "사용자 가게 댓글 수정",
             description = "사용자 가게 댓글을 수정합니다.",
-            method = "PATCH",
+            method = "POST",
             responses = {
                 @ApiResponse(
                         responseCode = "200",

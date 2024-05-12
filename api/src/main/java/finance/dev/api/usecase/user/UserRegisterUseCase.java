@@ -53,9 +53,6 @@ public class UserRegisterUseCase {
             if (!userRegisterPostRequest.getId().matches("^[a-zA-Z0-9]*$")) {
                 errorMessage2 += "• 아이디는 영문 대소문자와 숫자로만 입력해주세요.\n";
             }
-            if (userRegisterPostRequest.getId().matches(".*([a-zA-Z])\\1{3,}.*")) {
-                errorMessage2 += "• 아이디에 4회 이상 반복되는 문자를 사용할 수 없습니다.\n";
-            }
             if (userRegisterPostRequest.getId().matches(".*([a-zA-Z0-9])\\1{3,}.*")) {
                 errorMessage2 += "• 아이디에 4회 이상 연속되는 문자, 숫자를 사용할 수 없습니다.\n";
             }
@@ -82,9 +79,6 @@ public class UserRegisterUseCase {
                     .getPassword()
                     .matches("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&+=]).*$")) {
                 errorMessage3 += "• 비밀번호는 영문 대소문자, 숫자, 특수문자 (!@#$%^&+=)를 모두 포함해야 합니다.\n";
-            }
-            if (userRegisterPostRequest.getPassword().matches(".*([a-zA-Z])\\1{3,}.*")) {
-                errorMessage3 += "• 비밀번호에 4회 이상 반복되는 문자를 사용할 수 없습니다.\n";
             }
             if (userRegisterPostRequest.getPassword().matches(".*([a-zA-Z0-9@#$%^&+=])\\1{3,}.*")) {
                 errorMessage3 += "• 비밀번호에 4회 이상 연속되는 문자, 숫자, 특수문자를 사용할 수 없습니다.\n";

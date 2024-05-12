@@ -44,10 +44,10 @@ public class UserChkEmailUseCase {
                             + "<a href='"
                             + System.getenv("SERVER_URL")
                             + ":"
-                            + System.getenv("SERVER_PORT")
-                            + "/auth?email="
+                            + System.getenv("MAIL_PORT")
+                            + "/auth/"
                             + userChkEmailPostRequest.getEmail()
-                            + "&key="
+                            + "/"
                             + authKey
                             + "' target='_blank'>이메일 인증 확인</a>");
             emailUtils.setTo(userChkEmailPostRequest.getEmail());
@@ -74,9 +74,7 @@ public class UserChkEmailUseCase {
             do {
                 num = random.nextInt(75) + 48;
 
-                if ((num >= 48 && num <= 57)
-                        || (num >= 65 && num <= 90)
-                        || (num >= 97 && num <= 122)) {
+                if (num <= 57 || num >= 65 && num <= 90 || num >= 97) {
                     stringBuilder.append((char) num);
                 } else {
                     continue;
